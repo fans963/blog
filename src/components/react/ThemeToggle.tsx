@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ToggleButton } from 'react-aria-components';
+import { dispatchThemeChanged } from './ColorPicker';
 
 interface ThemeToggleProps {
   className?: string;
@@ -23,6 +24,8 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
     setIsDark(newIsDark);
     document.documentElement.classList.toggle('dark', newIsDark);
     localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+    // 通知 ColorPicker 重新应用颜色
+    dispatchThemeChanged();
   };
 
   return (

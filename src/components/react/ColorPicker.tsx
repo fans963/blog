@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button, Dialog, DialogTrigger, Popover } from 'react-aria-components';
 import {
   themeFromSourceColor,
@@ -79,7 +79,7 @@ function applyThemeColor(hexColor: string, isDark: boolean) {
 }
 
 function getSavedColor(): string {
-  return localStorage.getItem('md3-primary-color') || '#0066CC';
+  return localStorage.getItem('md3-primary-color') || '#6750A4';
 }
 
 function saveColor(color: string) {
@@ -94,45 +94,58 @@ interface ColorPickerProps {
   className?: string;
 }
 
+// 全局事件名称
+const THEME_CHANGED_EVENT = 'md3-theme-changed';
+
 export function ColorPicker({ className = '' }: ColorPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState('#0066CC');
-  const [customColor, setCustomColor] = useState('#0066CC');
-  const [isDark, setIsDark] = useState(false);
+  const [selectedColor, setSelectedColor] = useState('#6750A4');
+  const [customColor, setCustomColor] = useState('#6750A4');
   const customInputRef = useRef<HTMLInputElement>(null);
+  const savedColorRef = useRef<string>('#6750A4');
 
-  useEffect(() => {
-    setSelectedColor(getSavedColor());
-    setCustomColor(getSavedColor());
-    setIsDark(isDarkMode());
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          setIsDark(isDarkMode());
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => observer.disconnect();
+  // 应用保存的颜色到当前主题
+  const applySavedColor = useCallback(() => {
+    const color = savedColorRef.current;
+    applyThemeColor(color, isDarkMode());
   }, []);
+
+  // 初始化时应用保存的颜色
+  useEffect(() => {
+    const saved = getSavedColor();
+    savedColorRef.current = saved;
+    setSelectedColor(saved);
+    setCustomColor(saved);
+    
+    // 延迟一点应用，确保 DOM 已准备好
+    requestAnimationFrame(() => {
+      applySavedColor();
+    });
+  }, [applySavedColor]);
+
+  // 监听主题切换事件
+  useEffect(() => {
+    const handleThemeChange = () => {
+      applySavedColor();
+    };
+    
+    window.addEventListener(THEME_CHANGED_EVENT, handleThemeChange);
+    return () => window.removeEventListener(THEME_CHANGED_EVENT, handleThemeChange);
+  }, [applySavedColor]);
 
   const handleColorSelect = (color: string) => {
     setSelectedColor(color);
     setCustomColor(color);
-    applyThemeColor(color, isDark);
+    savedColorRef.current = color;
+    applyThemeColor(color, isDarkMode());
     saveColor(color);
   };
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const color = e.target.value;
     setCustomColor(color);
-    applyThemeColor(color, isDark);
+    savedColorRef.current = color;
+    applyThemeColor(color, isDarkMode());
     saveColor(color);
   };
 
@@ -196,4 +209,9 @@ export function ColorPicker({ className = '' }: ColorPickerProps) {
       </Popover>
     </DialogTrigger>
   );
+}
+
+// 导出事件触发函数，供 ThemeToggle 使用
+export function dispatchThemeChanged() {
+  window.dispatchEvent(new CustomEvent(THEME_CHANGED_EVENT));
 }
