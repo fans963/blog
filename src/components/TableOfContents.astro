@@ -14,35 +14,26 @@ const { headings } = Astro.props;
 
 {headings.length > 0 && (
   <>
-    {/* Mobile TOC Button */}
-    <button
-      id="toc-mobile-toggle"
-      class="fixed bottom-6 right-6 z-40 md:hidden w-12 h-12 rounded-full bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] shadow-lg flex items-center justify-center hover:bg-[var(--color-md-primary-container)] hover:text-[var(--color-md-on-primary-container)] transition-colors"
-      aria-label="显示目录"
-    >
-      <span class="material-symbols-outlined">list</span>
-    </button>
-
     {/* Mobile TOC Overlay */}
     <div
-      id="toc-mobile-overlay"
-      class="fixed inset-0 z-50 bg-black/50 md:hidden hidden"
+      id="toc-overlay"
+      class="fixed inset-0 z-50 bg-black/50 hidden"
     >
-      <div class="absolute right-0 top-16 bottom-0 w-72 max-w-[85vw] bg-[var(--color-md-surface)] shadow-xl overflow-y-auto">
+      <div class="absolute right-0 top-16 bottom-0 w-72 max-w-[85vw] bg-[var(--color-md-surface)] shadow-xl">
         <div class="sticky top-0 bg-[var(--color-md-surface)] z-10 p-4 border-b border-[var(--color-md-outline-variant)] flex items-center justify-between">
           <h3 class="title-medium text-[var(--color-md-on-surface)] flex items-center gap-2">
             <span class="material-symbols-outlined text-sm">list</span>
             目录
           </h3>
           <button
-            id="toc-mobile-close"
+            id="toc-close"
             class="p-2 rounded-full hover:bg-[var(--color-md-surface-variant)] transition-colors"
             aria-label="关闭目录"
           >
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
-        <nav class="p-4">
+        <nav class="overflow-y-auto max-h-[calc(100vh-100px)] p-4">
           <ul class="space-y-1">
             {headings.map((heading) => (
               <li>
@@ -60,8 +51,8 @@ const { headings } = Astro.props;
       </div>
     </div>
 
-    {/* Desktop TOC Sidebar - Show only when there's enough space on the right */}
-    <aside class="hidden fixed right-6 top-32 w-56 z-30">
+    {/* Desktop TOC Sidebar - Show only when there's enough space */}
+    <aside id="toc-sidebar" class="hidden fixed right-6 top-32 w-56 z-30">
       <div class="bg-[var(--color-md-surface)] rounded-xl border border-[var(--color-md-outline-variant)] shadow-sm overflow-hidden max-h-[calc(100vh-160px)] flex flex-col">
         <div class="p-3 border-b border-[var(--color-md-outline-variant)] flex-shrink-0">
           <h3 class="title-small text-[var(--color-md-on-surface)] flex items-center gap-2">
@@ -87,142 +78,70 @@ const { headings } = Astro.props;
       </div>
     </aside>
 
-    {/* TOC FAB - Show when desktop TOC is hidden */}
-    {headings.length > 0 && (
-      <button
-        id="toc-fab"
-        class="fixed z-40 bottom-6 right-6 w-14 h-14 rounded-full bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] shadow-lg flex items-center justify-center hover:bg-[var(--color-md-primary-container)] hover:text-[var(--color-md-on-primary-container)] transition-colors toc-element toc-fab-visible"
-        aria-label="显示目录"
-      >
-        <span class="material-symbols-outlined">list</span>
-      </button>
-    )}
+    {/* TOC FAB - Show when sidebar is hidden */}
+    <button
+      id="toc-fab"
+      class="fixed z-40 bottom-6 right-6 w-14 h-14 rounded-full bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] shadow-lg flex items-center justify-center hover:bg-[var(--color-md-primary-container)] hover:text-[var(--color-md-on-primary-container)] transition-colors toc-fab-visible"
+      aria-label="显示目录"
+    >
+      <span class="material-symbols-outlined">list</span>
+    </button>
 
     <script>
-      // Dynamic TOC visibility based on available space
       (function() {
-        const toc = document.querySelector('aside.fixed.right-6');
-        const tocFab = document.getElementById('toc-fab');
-        const tocMobileOverlay = document.getElementById('toc-mobile-overlay');
-        const tocMobileClose = document.getElementById('toc-mobile-close');
+        const overlay = document.getElementById('toc-overlay');
+        const sidebar = document.getElementById('toc-sidebar');
+        const fab = document.getElementById('toc-fab');
+        const closeBtn = document.getElementById('toc-close');
         const tocLinks = document.querySelectorAll('.toc-link');
-        const tocElements = document.querySelectorAll('.toc-element');
+        const backToTop = document.getElementById('back-to-top');
 
-        function updateTocVisibility() {
-          // Find the article content container
-          const article = document.querySelector('article .max-w-3xl');
-          if (!toc || !tocFab) return;
-          
-          const articleRect = article.getBoundingClientRect();
-          const tocWidth = 224; // w-56 = 224px
-          const rightMargin = 24; // right-6 = 24px
-          
-          // Calculate available space to the right of the article
-          const availableWidth = window.innerWidth - articleRect.right - rightMargin;
-          
-          // Minimum space needed for TOC (with some buffer)
-          const minSpaceNeeded = tocWidth + 16;
-          
-          // Check if article is not full width (has space on right)
-          const hasSpaceOnRight = articleRect.right < window.innerWidth - 100;
-          
-          // Show TOC sidebar only if there's enough space on the right
-          // TOC FAB visibility is controlled by CSS based on .toc-fab-visible class
-          if (hasSpaceOnRight && availableWidth >= minSpaceNeeded) {
-            toc.style.display = 'block';
-            tocFab?.classList.remove('toc-fab-visible');
-          } else {
-            toc.style.display = 'none';
-            tocFab?.classList.add('toc-fab-visible');
-          }
+        function openOverlay() {
+          overlay?.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
         }
 
-        function adjustFabPosition() {
-          // Adjust FAB position to avoid overlapping with BackToTop
-          if (!tocFab) return;
-          
-          const backToTop = document.querySelector('[class*="fixed"][class*="bottom-6"][class*="right-6"]:not(.toc-element)');
-          if (!backToTop) return;
-          
-          const tocFabRect = tocFab.getBoundingClientRect();
-          const backToTopRect = backToTop.getBoundingClientRect();
-          
-          // Check if they would overlap
-          const overlap = !(tocFabRect.right < backToTopRect.left || 
-                          tocFabRect.left > backToTopRect.right || 
-                          tocFabRect.bottom < backToTopRect.top || 
-                          tocFabRect.top > backToTopRect.bottom);
-          
-          if (overlap) {
-            // Move FAB to the left of BackToTop
-            tocFab.style.right = `${backToTopRect.right + 24}px`;
-          } else {
-            // Reset to default position
-            tocFab.style.right = '24px';
-          }
+        function closeOverlay() {
+          overlay?.classList.add('hidden');
+          document.body.style.overflow = '';
         }
 
-        // Initial check
-        updateTocVisibility();
-        adjustFabPosition();
+        // FAB click - open overlay
+        fab?.addEventListener('click', openOverlay);
 
-        // Recheck on resize
-        window.addEventListener('resize', () => {
-          updateTocVisibility();
-          adjustFabPosition();
+        // Close button click
+        closeBtn?.addEventListener('click', closeOverlay);
+
+        // Click outside to close
+        overlay?.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            closeOverlay();
+          }
         });
 
-        // Recheck on scroll (for dynamic content/layout)
-        window.addEventListener('scroll', () => {
-          requestAnimationFrame(() => {
-            updateTocVisibility();
-          });
-        }, { passive: true });
-
-        // FAB click handler
-        if (tocFab && tocMobileOverlay) {
-          tocFab.addEventListener('click', () => {
-            tocMobileOverlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-          });
-        }
-
-        // Mobile close handler
-        if (tocMobileClose && tocMobileOverlay) {
-          tocMobileClose.addEventListener('click', () => {
-            tocMobileOverlay.classList.add('hidden');
-            document.body.style.overflow = '';
-          });
-        }
-
-        // Close overlay when clicking backdrop
-        if (tocMobileOverlay) {
-          tocMobileOverlay.addEventListener('click', (e) => {
-            if (e.target === tocMobileOverlay) {
-              tocMobileOverlay.classList.add('hidden');
-              document.body.style.overflow = '';
-            }
-          });
-        }
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !overlay?.classList.contains('hidden')) {
+            closeOverlay();
+          }
+        });
 
         // Smooth scroll to section
         tocLinks.forEach(link => {
           link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetId = link.getAttribute('data-target');
-            const target = targetId ? document.getElementById(targetId) : null;
-            if (target) {
-              const offset = 80;
-              const elementPosition = target.getBoundingClientRect().top;
-              const offsetPosition = elementPosition + window.scrollY - offset;
-              window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-              });
-              // Close mobile overlay if open
-              if (tocMobileOverlay) {
-                tocMobileOverlay.classList.add('hidden');
-                document.body.style.overflow = '';
+            if (targetId) {
+              const target = document.getElementById(targetId);
+              if (target) {
+                const offset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.scrollY - offset;
+                window.scrollTo({
+                  top: offsetPosition,
+                  behavior: 'smooth'
+                });
+                closeOverlay();
               }
             }
           });
@@ -249,31 +168,48 @@ const { headings } = Astro.props;
           threshold: 0
         });
 
-        // Observe all headings
+        // Observe headings
         tocLinks.forEach(link => {
           const targetId = link.getAttribute('data-target');
-          const target = targetId ? document.getElementById(targetId) : null;
-          if (target) {
-            observer.observe(target);
+          if (targetId) {
+            const target = document.getElementById(targetId);
+            if (target) observer.observe(target);
           }
         });
 
-        // Adjust positions after layout is complete
-        setTimeout(() => {
-          updateTocVisibility();
-          adjustFabPosition();
-        }, 100);
-        setTimeout(adjustFabPosition, 500);
+        // Check if sidebar can be shown
+        function checkSidebar() {
+          if (!sidebar || !fab) return;
+          
+          const article = document.querySelector('article .max-w-3xl');
+          if (!article) return;
+          
+          const articleRect = article.getBoundingClientRect();
+          const availableWidth = window.innerWidth - articleRect.right - 24;
+          
+          // Show sidebar if article doesn't span full width AND there's enough space
+          const canShowSidebar = articleRect.right < window.innerWidth - 100 && availableWidth >= 240;
+          
+          if (canShowSidebar) {
+            sidebar.style.display = 'block';
+            fab.classList.remove('toc-fab-visible');
+          } else {
+            sidebar.style.display = 'none';
+            fab.classList.add('toc-fab-visible');
+          }
+        }
+
+        // Initial check
+        checkSidebar();
+
+        // Recheck on resize
+        window.addEventListener('resize', checkSidebar);
+
+        // Recheck on scroll
+        window.addEventListener('scroll', () => {
+          requestAnimationFrame(checkSidebar);
+        }, { passive: true });
       })();
     </script>
-
-    <style>
-      /* Show TOC only when there's enough horizontal space */
-      @media (min-width: 1280px) {
-        aside.fixed.right-6:not([style*="display: none;"]) {
-          display: block !important;
-        }
-      }
-    </style>
   </>
 )}
