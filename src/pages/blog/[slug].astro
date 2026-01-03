@@ -393,45 +393,45 @@ const articleJsonLd = {
     }
 
     // Show resume indicator
-    function showResumeIndicator(targetScrollY) {
-      let indicator = document.getElementById('resume-indicator');
-      if (!indicator) {
-        indicator = document.createElement('div');
-        indicator.id = 'resume-indicator';
-        indicator.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-primary-container)] text-[var(--color-md-on-primary-container)] px-4 py-2 rounded-full shadow-lg z-40 flex items-center gap-2 cursor-pointer transition-opacity duration-300';
+    function showResumeIndicator(targetScrollY: number) {
+      const existingIndicator = document.getElementById('resume-indicator');
+      if (existingIndicator) return;
+      
+      const indicator = document.createElement('div');
+      indicator.id = 'resume-indicator';
+      indicator.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-primary-container)] text-[var(--color-md-on-primary-container)] px-4 py-2 rounded-full shadow-lg z-40 flex items-center gap-2 cursor-pointer transition-opacity duration-300';
+      indicator.style.opacity = '0';
+      indicator.innerHTML = `
+        <span class="material-symbols-outlined text-sm">play_arrow</span>
+        <span class="label-medium">继续阅读</span>
+      `;
+      
+      // Click to resume reading
+      indicator.addEventListener('click', () => {
+        window.scrollTo({
+          top: targetScrollY,
+          behavior: 'smooth'
+        });
         indicator.style.opacity = '0';
-        indicator.innerHTML = `
-          <span class="material-symbols-outlined text-sm">play_arrow</span>
-          <span class="label-medium">继续阅读</span>
-        `;
-        
-        // Click to resume reading
-        indicator.addEventListener('click', () => {
-          window.scrollTo({
-            top: targetScrollY,
-            behavior: 'smooth'
-          });
+        setTimeout(() => indicator.remove(), 300);
+      });
+      
+      document.body.appendChild(indicator);
+      
+      // Fade in
+      requestAnimationFrame(() => {
+        indicator.style.opacity = '1';
+      });
+      
+      // Auto-hide after 5 seconds if not clicked
+      setTimeout(() => {
+        if (indicator.parentElement) {
           indicator.style.opacity = '0';
-          setTimeout(() => indicator.remove(), 300);
-        });
-        
-        document.body.appendChild(indicator);
-        
-        // Fade in
-        requestAnimationFrame(() => {
-          indicator.style.opacity = '1';
-        });
-        
-        // Auto-hide after 5 seconds if not clicked
-        setTimeout(() => {
-          if (indicator.parentElement) {
-            indicator.style.opacity = '0';
-            setTimeout(() => {
-              if (indicator.parentElement) indicator.remove();
-            }, 300);
-          }
-        }, 5000);
-      }
+          setTimeout(() => {
+            if (indicator.parentElement) indicator.remove();
+          }, 300);
+        }
+      }, 5000);
     }
 
     // Debounced save

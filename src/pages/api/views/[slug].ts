@@ -20,9 +20,13 @@ export const GET: APIRoute = async ({ params, locals }) => {
     if (kv) {
       const stored = await kv.get(`views:${slug}`);
       count = parseInt(stored as string) || 0;
+    } else {
+      // Development mode fallback - use localStorage
+      count = parseInt(localStorage.getItem(`views:${slug}`) || '0');
     }
   } catch (e) {
     // Fallback to demo mode
+    console.warn('KV not available, using demo mode');
     count = Math.floor(Math.random() * 50) + 10;
   }
   
@@ -52,9 +56,14 @@ export const POST: APIRoute = async ({ params }) => {
       const current = await kv.get(`views:${slug}`);
       count = (parseInt(current as string) || 0) + 1;
       await kv.put(`views:${slug}`, count.toString());
+    } else {
+      // Development mode fallback - use localStorage
+      const current = parseInt(localStorage.getItem(`views:${slug}`) || '0');
+      count = current + 1;
+      localStorage.setItem(`views:${slug}`, count.toString());
     }
   } catch (e) {
-    // Demo mode
+    // Demo mode - return random count for display
     count = Math.floor(Math.random() * 100) + 1;
   }
   

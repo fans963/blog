@@ -8,4 +8,4 @@ interface Props {
 const { active = 'home' } = Astro.props;
 ---
 
-<ReactNavbar client:load active={active} />
+<ReactNavbar client:only="react" active={active} />

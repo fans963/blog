@@ -11,7 +11,7 @@ const { slug, showLabel = true, icon = true } = Astro.props;
 ---
 
 <ViewCountReact
-  client:load
+  client:only="react"
   slug={slug}
   showLabel={showLabel}
   icon={icon}
