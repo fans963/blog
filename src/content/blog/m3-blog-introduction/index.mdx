@@ -1,0 +1,188 @@
+---
+title: 'My Blog 网站开发之旅：Material Design 3 实践'
+description: '从零开始构建一个 Material Design 3 风格的个人博客网站，使用 Astro、React 和 Tailwind CSS。'
+date: 2025-01-03
+category: '前端'
+tags: ['Astro', 'React', 'Material Design', 'Tailwind CSS', 'TypeScript']
+image: 'https://picsum.photos/seed/m3blog/800/450'
+featured: true
+---
+
+## 项目起源
+
+作为一个对设计和用户体验有追求的开发者，我决定从头构建一个个人博客网站。这个项目不仅仅是为了记录技术笔记，更是为了实践 Material Design 3（MD3）设计理念，探索现代前端技术栈的最佳实践。
+
+**My Blog** 由此诞生 —— 一个基于 Astro、React 和 Tailwind CSS 构建的 Material Design 3 风格博客网站。
+
+## 技术栈选择
+
+### 为什么选择 Astro？
+
+在选择框架时，我对比了 Next.js、Gatsby 和 Astro。最终选择 Astro 的原因：
+
+1. **零 JS 默认**：Astro 默认不发送 JavaScript，只在需要时 hydration，极大提升了性能
+2. ** Islands 架构**：可以混合使用 React、Vue、Svelte 等框架，按需加载
+3. **内容优先**：完美适配博客这类内容密集型网站
+4. **TypeScript 原生支持**：开箱即用的类型安全
+
+### React + Tailwind CSS 的组合
+
+- **React**：用于需要交互性的组件，如 ColorPicker、ThemeToggle
+- **Tailwind CSS**：快速实现 MD3 设计系统，通过 `@theme` 配置自定义属性
+
+## Material Design 3 设计实践
+
+### 动态颜色系统
+
+MD3 的核心特性之一是动态颜色。网站实现了完整的动态颜色切换功能：
+
+```typescript
+import { applyThemeToDom } from '../utils/theme';
+
+function changeTheme(color: string) {
+  const theme = createThemeFromColor(color);
+  const cssVariables = themeToCssVariables(theme);
+  applyThemeToDom(cssVariables);
+}
+```
+
+用户可以：
+- 选择 8 种预设颜色
+- 使用颜色选择器自定义主题色
+- 切换深色/浅色模式
+- 所有设置自动保存到 localStorage
+
+### MD3 组件实现
+
+网站实现了多个 MD3 核心组件：
+
+- **Filled Button**：主要操作按钮
+- **Tonal Button**：次要操作按钮
+- **Icon Button**：图标按钮，用于导航栏
+- **Chips**：分类筛选标签
+- **Cards**：文章卡片，带 hover 动效
+
+### 动效设计
+
+遵循 MD3 的 Motion 规范：
+
+```css
+--md-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+--md-motion-duration-short: 200ms;
+--md-motion-duration-medium: 400ms;
+```
+
+## 功能特性
+
+### 1. 首页展示
+
+首页采用 Hero Section 设计，包含：
+- 动态背景渐变动画
+- 最新文章快捷入口
+- 统计数据展示（文章数、分类数）
+- 分类浏览卡片
+- 最新文章网格
+
+### 2. 文章归档
+
+博客归档页面提供：
+- 实时搜索过滤（支持标题和描述匹配）
+- 分类筛选（URL 同步）
+- 文章卡片网格布局
+- 响应式设计
+
+### 3. 文章详情
+
+文章页面支持：
+- Markdown/MDX 内容渲染
+- 代码高亮
+- 阅读时间估算
+- 标签展示
+
+### 4. 主题系统
+
+- 8 种预设主题色
+- 自定义颜色选择
+- 深色模式切换
+- 主题色持久化
+
+## 性能优化
+
+1. **图片优化**：使用 picsum.photos 随机图片，配合 lazy loading
+2. **代码分割**：Astro 自动进行代码分割
+3. **字体优化**：Maple Mono NF CN 字体本地化
+4. **CSS 优化**：Tailwind CSS 按需生成 CSS
+
+## 响应式设计
+
+网站在所有设备上都有良好表现：
+
+- **桌面端 (≥1024px)**：完整三栏布局
+- **平板端 (640px - 1024px)**：双栏布局
+- **手机端 ()**：单栏布局，导航栏自适应
+
+## 开发过程中的收获
+
+### 1. TypeScript 类型安全
+
+通过 Astro 的内容集合（Content Collections）功能，实现了文章数据的类型安全：
+
+```typescript
+const blog = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.date(),
+    category: z.string(),
+    tags: z.array(z.string()),
+    image: z.string().optional(),
+    featured: z.boolean().default(false),
+  }),
+});
+```
+
+### 2. 组件设计模式
+
+采用 Atomic Design 思想，将组件分为：
+- **Atoms**：按钮、图标、标签
+- **Molecules**：搜索框、分类卡片
+- **Organisms**：导航栏、文章卡片
+- **Templates**：页面布局
+
+### 3. CSS 架构
+
+使用 Tailwind CSS 的 `@theme` 功能，定义完整的 MD3 设计令牌：
+
+```css
+@theme {
+  --color-md-primary: rgb(var(--md-sys-color-primary));
+  --color-md-on-primary: rgb(var(--md-sys-color-on-primary));
+  --color-md-surface: rgb(var(--md-sys-color-surface));
+  /* ... 更多变量 */
+}
+```
+
+## 未来规划
+
+这个项目会持续迭代，计划添加：
+
+- [ ] 文章阅读进度条
+- [ ] 文章目录（Table of Contents）
+- [ ] 评论系统
+- [ ] RSS 订阅
+- [ ] 文章阅读量统计
+- [ ] 更多 MD3 组件（Bottom Sheet、Dialog 等）
+
+## 结语
+
+开发这个博客网站的过程非常有趣。通过实践 Material Design 3，我深刻理解了设计系统的重要性。好的设计不仅仅是视觉上的美观，更是用户体验的一致性和可访问性。
+
+如果你对这个项目感兴趣，欢迎在 GitHub 上查看源码，或者直接在网站上提出建议和反馈。
+
+让我们一起探索更好的前端开发实践！
+
+---
+
+**项目地址**：[GitHub Repository]
+
+**技术标签**：#Astro #React #MaterialDesign3 #TailwindCSS #TypeScript

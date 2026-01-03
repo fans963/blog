@@ -1,0 +1,110 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import ColorPicker from './ColorPicker.astro';
+
+interface Props {
+  active?: 'home' | 'blog' | 'about' | 'welcome' | string;
+}
+
+const { active = 'home' } = Astro.props;
+
+const navItems = [
+  { href: '/blog', label: '首页', icon: 'home', key: 'home' },
+  { href: '/about', label: '关于', icon: 'person', key: 'about' },
+];
+---
+
+<header class="md-nav-bar sticky top-0 z-50">
+  <div class="container-md">
+    <nav class="flex items-center justify-between h-16 gap-4">
+      <a href="/" class="flex items-center gap-2 group flex-shrink-0">
+        <div class="w-8 h-8 rounded-lg bg-[var(--color-md-primary)] flex items-center justify-center transition-transform group-hover:scale-105">
+          <span class="material-symbols-outlined text-white text-sm">edit</span>
+        </div>
+        <span class="title-medium text-[var(--color-md-on-surface)] font-medium whitespace-nowrap">My Blog</span>
+      </a>
+
+      <div class="flex items-center gap-1 flex-shrink-0">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'flex items-center gap-1.5 px-4 py-2 rounded-full transition-all duration-200',
+              active === item.key
+                ? 'bg-[var(--color-md-surface-variant)] text-[var(--color-md-on-surface-variant)]'
+                : 'text-[var(--color-md-on-surface-variant)] hover:bg-[rgba(var(--md-sys-color-on-surface),0.08)]'
+            ]}
+          >
+            <span class="material-symbols-outlined text-sm">{item.icon}</span>
+            <span class="label-medium whitespace-nowrap">{item.label}</span>
+          </a>
+        ))}
+      </div>
+
+      <!-- Separator -->
+      <div class="w-px h-6 bg-[var(--color-md-outline-variant)] mx-1 flex-shrink-0"></div>
+
+      <div class="flex items-center gap-0.5 flex-shrink-0">
+        <!-- Search Icon -->
+        <a
+          href="/blog?focus=true"
+          class="md-icon-button text-[var(--color-md-on-surface-variant)]"
+          aria-label="搜索文章"
+        >
+          <span class="material-symbols-outlined">search</span>
+        </a>
+        
+        <ColorPicker />
+        <ThemeToggle />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .md-nav-bar {
+    backdrop-filter: blur(8px);
+    background-color: rgba(var(--md-sys-color-surface), 0.85);
+  }
+
+  /* Extra small screens */
+  @media (max-width: 359px) {
+    nav {
+      gap: 0.5rem !important;
+    }
+    
+    .md-icon-button {
+      width: 40px !important;
+      height: 40px !important;
+    }
+    
+    nav a span.label-medium {
+      display: none;
+    }
+  }
+
+  /* Small screens */
+  @media (min-width: 360px) and (max-width: 479px) {
+    nav {
+      gap: 0.5rem !important;
+    }
+    
+    nav a span.label-medium {
+      font-size: 11px;
+    }
+  }
+
+  /* Medium screens */
+  @media (min-width: 480px) and (max-width: 767px) {
+    nav {
+      gap: 0.75rem !important;
+    }
+  }
+
+  /* Large screens - ensure proper spacing */
+  @media (min-width: 1280px) {
+    nav {
+      gap: 1.5rem !important;
+    }
+  }
+</style>

@@ -1,0 +1,139 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Button from '../../components/Button.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+function calculateReadTime(content: string): string {
+  const wordsPerMinute = 200;
+  const words = content.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return `${minutes} 分钟`;
+}
+---
+
+<BaseLayout title={`${post.data.title} - My Blog`} image={post.data.image}>
+  <Navbar />
+
+  <main class="flex-1">
+    <div class="relative h-[40vh] min-h-[300px] max-h-[500px] overflow-hidden">
+      {post.data.image ? (
+        <img
+          src={post.data.image}
+          alt={post.data.title}
+          class="w-full h-full object-cover"
+        />
+      ) : (
+        <div class="w-full h-full bg-[var(--color-md-primary-container)]"></div>
+      )}
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-[var(--color-md-background)]"></div>
+    </div>
+
+    <article class="relative -mt-32">
+      <div class="container-md">
+        <header class="max-w-3xl mx-auto mb-12">
+          <div class="flex items-center gap-3 mb-4 flex-wrap">
+            <a href={`/blog?category=${post.data.category}`} class="md-chip hover:opacity-80 transition-opacity">
+              {post.data.category}
+            </a>
+            <span class="label-medium text-[var(--color-md-on-surface-variant)] flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">calendar_today</span>
+              {formattedDate}
+            </span>
+            <span class="label-medium text-[var(--color-md-on-surface-variant)] flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">schedule</span>
+              {calculateReadTime(post.body)}
+            </span>
+          </div>
+
+          <h1 class="headline-large text-[var(--color-md-on-background)] mb-6">
+            {post.data.title}
+          </h1>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            {post.data.tags.map((tag) => (
+              <span class="md-chip">{tag}</span>
+            ))}
+          </div>
+        </header>
+
+        <div class="max-w-3xl mx-auto">
+          <div class="prose prose-lg max-w-none prose-headings:text-[var(--color-md-on-background)] prose-p:text-[var(--color-md-on-surface-variant)] prose-a:text-[var(--color-md-primary)] prose-strong:text-[var(--color-md-on-surface)] prose-code:bg-[var(--color-md-surface-variant)] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-[var(--color-md-surface)] prose-pre:text-[var(--color-md-on-surface)]">
+            <Content />
+          </div>
+
+          <div class="mt-12 pt-8 border-t border-[var(--color-md-outline-variant)]">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-[var(--color-md-primary-container)] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[var(--color-md-on-primary-container)]">person</span>
+                </div>
+                <div>
+                  <span class="title-medium text-[var(--color-md-on-surface)] block">作者</span>
+                  <span class="label-medium text-[var(--color-md-on-surface-variant)]">My Blog</span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <Button variant="tonal" icon="share">分享</Button>
+                <Button variant="text" icon="bookmark">收藏</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .prose pre {
+    background-color: var(--color-md-surface);
+    border-radius: var(--md-shape-corner-medium);
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .prose th,
+  .prose td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-md-outline-variant);
+  }
+
+  .prose th {
+    background-color: var(--color-md-surface-variant);
+    font-weight: 500;
+  }
+</style>
