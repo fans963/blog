@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import Button from '../components/Button.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
 ---
 
 <BaseLayout title="关于 - My Blog">
@@ -14,8 +14,13 @@ import Button from '../components/Button.astro';
       <div class="container-md">
         <div class="max-w-3xl mx-auto">
           <div class="flex flex-col items-center text-center mb-12">
-            <div class="w-32 h-32 rounded-full bg-[var(--color-md-primary-container)] flex items-center justify-center mb-6">
-              <span class="material-symbols-outlined text-[var(--color-md-on-primary-container)]" style="font-size: 64px;">
+            <div
+              class="w-32 h-32 rounded-full bg-[var(--color-md-primary-container)] flex items-center justify-center mb-6"
+            >
+              <span
+                class="material-symbols-outlined text-[var(--color-md-on-primary-container)]"
+                style="font-size: 64px;"
+              >
                 person
               </span>
             </div>
@@ -30,12 +35,15 @@ import Button from '../components/Button.astro';
           <!-- About Content -->
           <div class="prose prose-lg max-w-none">
             <section class="mb-12">
-              <h2 class="headline-small text-[var(--color-md-on-background)] mb-4">
+              <h2
+                class="headline-small text-[var(--color-md-on-background)] mb-4"
+              >
                 你好，我是 👋
               </h2>
               <div class="text-[var(--color-md-on-surface-variant)] space-y-4">
                 <p>
-                  我是一名热爱前端开发的技术博主，专注于 React、Vue、Astro 等现代前端技术。
+                  我是一名热爱前端开发的技术博主，专注于 React、Vue、Astro
+                  等现代前端技术。
                   在这个博客中，我会分享我的学习心得、项目经验以及行业观察。
                 </p>
                 <p>
@@ -46,41 +54,56 @@ import Button from '../components/Button.astro';
             </section>
 
             <section class="mb-12">
-              <h2 class="headline-small text-[var(--color-md-on-background)] mb-4">
+              <h2
+                class="headline-small text-[var(--color-md-on-background)] mb-4"
+              >
                 技术栈
               </h2>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {[
-                  'React / Next.js',
-                  'TypeScript',
-                  'Astro',
-                  'Tailwind CSS',
-                  'Node.js',
-                  'PostgreSQL',
-                ].map((tech) => (
-                  <div class="md-card p-4 flex items-center gap-3 bg-[var(--color-md-surface-variant)]">
-                    <span class="material-symbols-outlined text-[var(--color-md-primary)]">code</span>
-                    <span class="body-medium text-[var(--color-md-on-surface-variant)]">{tech}</span>
-                  </div>
-                ))}
+                {
+                  [
+                    "React / Next.js",
+                    "TypeScript",
+                    "Astro",
+                    "Tailwind CSS",
+                    "Node.js",
+                    "PostgreSQL",
+                  ].map((tech) => (
+                    <div class="md-card p-4 flex items-center gap-3 bg-[var(--color-md-surface-variant)]">
+                      <span class="material-symbols-outlined text-[var(--color-md-primary)]">
+                        code
+                      </span>
+                      <span class="body-medium text-[var(--color-md-on-surface-variant)]">
+                        {tech}
+                      </span>
+                    </div>
+                  ))
+                }
               </div>
             </section>
 
             <section class="mb-12">
-              <h2 class="headline-small text-[var(--color-md-on-background)] mb-4">
+              <h2
+                class="headline-small text-[var(--color-md-on-background)] mb-4"
+              >
                 联系我
               </h2>
               <p class="text-[var(--color-md-on-surface-variant)] mb-6">
                 如果你对我的文章感兴趣，或者有任何问题和建议，欢迎通过以下方式联系我：
               </p>
               <div class="flex flex-wrap gap-4">
-                <Button variant="tonal" icon="mail" href="mailto:hello@example.com">
+                <Button
+                  variant="tonal"
+                  icon="mail"
+                  href="enbofan663@gmail.com"
+                >
                   邮件
                 </Button>
-                <Button variant="tonal" icon="chat" href="https://twitter.com">
-                  Twitter
-                </Button>
-                <Button variant="tonal" icon="code" href="https://github.com">
+                <Button
+                  variant="tonal"
+                  icon="code"
+                  href="https://github.com/fans963"
+                >
                   GitHub
                 </Button>
               </div>

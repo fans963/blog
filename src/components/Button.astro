@@ -1,4 +1,6 @@
 ---
+import { Button as ReactButton } from './react/Button';
+
 interface Props {
   variant?: 'filled' | 'tonal' | 'outlined' | 'text';
   size?: 'small' | 'medium' | 'large';
@@ -20,76 +22,18 @@ const {
   icon,
   iconPosition = 'start',
 } = Astro.props;
-
-const buttonClasses = [
-  'inline-flex items-center justify-center gap-1.5 font-medium rounded-full transition-all duration-200',
-  'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-  'disabled:opacity-50 disabled:cursor-not-allowed',
-];
-
-// Size classes
-const sizeClasses = {
-  small: 'px-3 py-1.5 text-xs gap-1',
-  medium: 'px-5 py-2.5 text-sm',
-  large: 'px-7 py-3 text-base',
-};
-
-// Variant classes
-const variantClasses = {
-  filled: 'bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] hover:shadow-md',
-  tonal: 'bg-[var(--color-md-secondary-container)] text-[var(--color-md-on-secondary-container)] hover:shadow-sm',
-  outlined: 'border bg-transparent hover:bg-[rgba(var(--md-sys-color-primary),0.08)]',
-  text: 'bg-transparent hover:bg-[rgba(var(--md-sys-color-primary),0.08)]',
-};
-
-const baseClasses = [
-  ...buttonClasses,
-  sizeClasses[size],
-  variantClasses[variant],
-];
-
-const className = [
-  ...baseClasses,
-  fullWidth ? 'w-full' : '',
-].join(' ');
-
-const buttonVariant = variant === 'outlined'
-  ? `1px solid rgb(var(--md-sys-color-outline))`
-  : '';
 ---
 
-{
-  href ? (
-    <a
-      href={disabled ? undefined : href}
-      class:list={[
-        className,
-        disabled ? 'pointer-events-none' : ''
-      ]}
-      style={buttonVariant ? { border: buttonVariant } : {}}
-    >
-      {icon && iconPosition === 'start' && (
-        <span class="material-symbols-outlined text-sm">{icon}</span>
-      )}
-      <slot />
-      {icon && iconPosition === 'end' && (
-        <span class="material-symbols-outlined text-sm">{icon}</span>
-      )}
-    </a>
-  ) : (
-    <button
-      type={type}
-      class={className}
-      disabled={disabled}
-      style={buttonVariant ? { border: buttonVariant } : {}}
-    >
-      {icon && iconPosition === 'start' && (
-        <span class="material-symbols-outlined text-sm">{icon}</span>
-      )}
-      <slot />
-      {icon && iconPosition === 'end' && (
-        <span class="material-symbols-outlined text-sm">{icon}</span>
-      )}
-    </button>
-  )
-}
+<ReactButton
+  client:load
+  variant={variant}
+  size={size}
+  href={href}
+  type={type}
+  isDisabled={disabled}
+  fullWidth={fullWidth}
+  icon={icon}
+  iconPosition={iconPosition}
+>
+  <slot />
+</ReactButton>
