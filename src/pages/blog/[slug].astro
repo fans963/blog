@@ -377,19 +377,9 @@ const articleJsonLd = {
         if (saved && saved.timestamp) {
           // Only restore if saved within last 7 days
           const sevenDays = 7 * 24 * 60 * 60 * 1000;
-          if (Date.now() - saved.timestamp < sevenDays) {
+          if (Date.now() - saved.timestamp < sevenDays && saved.scrollY > 100) {
             // Show "continue reading" indicator
-            showResumeIndicator(saved.progress);
-            
-            // Restore position after a short delay to allow page to fully load
-            setTimeout(() => {
-              if (saved.scrollY > 100) {
-                window.scrollTo({
-                  top: saved.scrollY,
-                  behavior: 'auto' // Use instant scroll for restoration
-                });
-              }
-            }, 100);
+            showResumeIndicator(saved.scrollY);
           }
         }
       } catch (e) {
@@ -398,25 +388,49 @@ const articleJsonLd = {
     }
 
     // Show resume indicator
-    function showResumeIndicator(progress) {
+    function showResumeIndicator(targetScrollY) {
       let indicator = document.getElementById('resume-indicator');
       if (!indicator) {
         indicator = document.createElement('div');
         indicator.id = 'resume-indicator';
-        indicator.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-primary-container)] text-[var(--color-md-on-primary-container)] px-4 py-2 rounded-full shadow-lg z-40 flex items-center gap-2 cursor-pointer';
+        indicator.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-primary-container)] text-[var(--color-md-on-primary-container)] px-4 py-2 rounded-full shadow-lg z-40 flex items-center gap-2 cursor-pointer transition-opacity duration-300';
+        indicator.style.opacity = '0';
         indicator.innerHTML = `
           <span class="material-symbols-outlined text-sm">play_arrow</span>
           <span class="label-medium">继续阅读</span>
         `;
+        
+        // Click to resume reading
         indicator.addEventListener('click', () => {
-          indicator.remove();
+          window.scrollTo({
+            top: targetScrollY,
+            behavior: 'smooth'
+          });
+          indicator.style.opacity = '0';
+          setTimeout(() => indicator.remove(), 300);
         });
+        
         document.body.appendChild(indicator);
+        
+        // Fade in
+        requestAnimationFrame(() => {
+          indicator.style.opacity = '1';
+        });
+        
+        // Auto-hide after 5 seconds if not clicked
+        setTimeout(() => {
+          if (indicator.parentElement) {
+            indicator.style.opacity = '0';
+            setTimeout(() => {
+              if (indicator.parentElement) indicator.remove();
+            }, 300);
+          }
+        }, 5000);
       }
     }
 
     // Debounced save
-    let saveTimeout;
+    let saveTimeout: ReturnType<typeof setTimeout> | undefined;
     function debouncedSave() {
       clearTimeout(saveTimeout);
       saveTimeout = setTimeout(saveProgress, 500);
