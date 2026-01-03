@@ -1,0 +1,18 @@
+---
+import { ReadingProgress as ReadingProgressReact } from './react/ReadingProgress';
+
+interface Props {
+  color?: string;
+  height?: number;
+  showPercentage?: boolean;
+}
+
+const { color, height, showPercentage } = Astro.props;
+---
+
+<ReadingProgressReact
+  client:load
+  color={color}
+  height={height}
+  showPercentage={showPercentage}
+/>

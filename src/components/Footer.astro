@@ -20,6 +20,15 @@ const currentYear = new Date().getFullYear();
 
       <!-- Links -->
       <div class="flex items-center gap-6">
+        <button
+          id="pwa-install-btn"
+          class="hidden items-center gap-1 text-[var(--color-md-on-surface-variant)] hover:text-[var(--color-md-primary)] transition-colors cursor-pointer bg-transparent border-0 p-0"
+          style="display: none;"
+        >
+          <span class="material-symbols-outlined text-sm">download</span>
+          <span class="label-medium">安装应用</span>
+        </button>
+
         <a
           href="/rss.xml"
           class="flex items-center gap-1 text-[var(--color-md-on-surface-variant)] hover:text-[var(--color-md-primary)] transition-colors"

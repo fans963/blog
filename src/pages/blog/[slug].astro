@@ -5,6 +5,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Button from '../../components/Button.astro';
+import ShareButton from '../../components/ShareButton.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
+import ImageViewer from '../../components/ImageViewer.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -19,7 +23,16 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+// Transform Astro headings to our format
+const tocHeadings = headings
+  .filter((h) => h.depth <= 3) // Only h1, h2, h3
+  .map((h) => ({
+    id: h.slug,
+    text: h.text,
+    level: h.depth
+  }));
 
 const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
   year: 'numeric',
@@ -33,9 +46,42 @@ function calculateReadTime(content: string): string {
   const minutes = Math.ceil(words / wordsPerMinute);
   return `${minutes} 分钟`;
 }
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  image: post.data.image ? new URL(post.data.image, Astro.url) : undefined,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'My Blog',
+    url: Astro.site
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'My Blog',
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/favicon.svg', Astro.url)
+    }
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': new URL(`/blog/${post.slug}`, Astro.site).toString()
+  },
+  articleSection: post.data.category,
+  keywords: post.data.tags.join(', '),
+  inLanguage: 'zh-CN'
+};
 ---
 
 <BaseLayout title={`${post.data.title} - My Blog`} image={post.data.image}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+  <ReadingProgress />
+  <TableOfContents headings={tocHeadings} />
   <Navbar />
 
   <main class="flex-1">
@@ -81,9 +127,11 @@ function calculateReadTime(content: string): string {
         </header>
 
         <div class="max-w-3xl mx-auto">
-          <div class="prose prose-lg max-w-none prose-headings:text-[var(--color-md-on-background)] prose-p:text-[var(--color-md-on-surface-variant)] prose-a:text-[var(--color-md-primary)] prose-strong:text-[var(--color-md-on-surface)] prose-code:bg-[var(--color-md-surface-variant)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[var(--color-md-surface)] prose-pre:text-[var(--color-md-on-surface)] prose-pre:rounded-xl prose-pre:border prose-pre:border-[var(--color-md-outline-variant)]">
-            <Content />
-          </div>
+          <ImageViewer>
+            <div class="prose prose-lg max-w-none prose-headings:text-[var(--color-md-on-background)] prose-p:text-[var(--color-md-on-surface-variant)] prose-a:text-[var(--color-md-primary)] prose-strong:text-[var(--color-md-on-surface)] prose-code:bg-[var(--color-md-surface-variant)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[var(--color-md-surface)] prose-pre:text-[var(--color-md-on-surface)] prose-pre:rounded-xl prose-pre:border prose-pre:border-[var(--color-md-outline-variant)]">
+              <Content />
+            </div>
+          </ImageViewer>
 
           <div class="mt-12 pt-8 border-t border-[var(--color-md-outline-variant)]">
             <div class="flex items-center justify-between">
@@ -98,14 +146,39 @@ function calculateReadTime(content: string): string {
               </div>
 
               <div class="flex items-center gap-2">
-                <Button variant="tonal" icon="share">分享</Button>
+                <ShareButton
+                  title={post.data.title}
+                  url={Astro.site ? new URL(`/blog/${post.slug}`, Astro.site).toString() : undefined}
+                  description={post.data.description}
+                />
                 <Button variant="text" icon="bookmark">收藏</Button>
               </div>
             </div>
           </div>
 
-          <!-- Giscus Comments -->
-          <div class="mt-12 pt-8 border-t border-[var(--color-md-outline-variant)]">
+          <!-- Toast for share feedback -->
+<div id="share-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-inverse-surface)] text-[var(--color-md-inverse-on-surface)] px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none z-50">
+  <span class="label-medium">链接已复制到剪贴板</span>
+</div>
+
+<script>
+  // Listen for copy events and show toast
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    // Check if share button was clicked
+    if (target.closest('button')?.getAttribute('aria-label')?.includes('分享') || 
+        target.closest('button')?.textContent?.includes('已复制')) {
+      const toast = document.getElementById('share-toast');
+      if (toast) {
+        toast.style.opacity = '1';
+        setTimeout(() => {
+          toast.style.opacity = '0';
+        }, 2000);
+      }
+    }
+  });
+</script>
+          <div class="mt-12 pt-8 border-t border-[var(--color-md-outline-variant)] mb-16">
             <h2 class="title-large text-[var(--color-md-on-background)] mb-6">评论</h2>
             <div class="giscus-container">
               <script src="https://giscus.app/client.js"
@@ -198,6 +271,51 @@ function calculateReadTime(content: string): string {
   }
 </style>
 
+<script>
+  // Copy code with attribution
+  document.addEventListener('copy', (e) => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) return;
+    
+    const selectedText = selection.toString();
+    
+    // Check if copying from a code block
+    const codeBlock = selection.anchorNode?.parentElement?.closest('pre');
+    
+    if (codeBlock) {
+      const articleTitle = document.querySelector('h1')?.textContent || 'My Blog';
+      const articleUrl = window.location.href;
+      const copyrightText = `\n\n// 来源: ${articleTitle}\n// 链接: ${articleUrl}`;
+      
+      // Modified text with attribution
+      const modifiedText = selectedText + copyrightText;
+      
+      // Use Clipboard API to set the modified text
+      e.clipboardData?.setData('text/plain', modifiedText);
+      e.preventDefault();
+      
+      // Show toast notification
+      showCopyToast();
+    }
+  });
+
+  function showCopyToast() {
+    let toast = document.getElementById('code-copy-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'code-copy-toast';
+      toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-inverse-surface)] text-[var(--color-md-inverse-on-surface)] px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-200 pointer-events-none z-50';
+      toast.innerHTML = '<span class="label-medium">代码已复制，来源已添加</span>';
+      document.body.appendChild(toast);
+    }
+    
+    toast.style.opacity = '1';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+    }, 2000);
+  }
+</script>
+
 <style>
   .prose pre {
     padding: 1rem;
@@ -222,3 +340,97 @@ function calculateReadTime(content: string): string {
     font-weight: 500;
   }
 </style>
+
+<script>
+  // Reading progress persistence
+  (function() {
+    const STORAGE_KEY = 'blog_reading_progress';
+    const articleSlug = window.location.pathname.split('/').pop() || '';
+    
+    // Save scroll position
+    function saveProgress() {
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? (scrollY / maxScroll) * 100 : 0;
+      
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        data[articleSlug] = {
+          scrollY,
+          progress,
+          timestamp: Date.now()
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Failed to save reading progress:', e);
+      }
+    }
+
+    // Restore scroll position
+    function restoreProgress() {
+      if (!articleSlug) return;
+      
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        const saved = data[articleSlug];
+        
+        if (saved && saved.timestamp) {
+          // Only restore if saved within last 7 days
+          const sevenDays = 7 * 24 * 60 * 60 * 1000;
+          if (Date.now() - saved.timestamp < sevenDays) {
+            // Show "continue reading" indicator
+            showResumeIndicator(saved.progress);
+            
+            // Restore position after a short delay to allow page to fully load
+            setTimeout(() => {
+              if (saved.scrollY > 100) {
+                window.scrollTo({
+                  top: saved.scrollY,
+                  behavior: 'auto' // Use instant scroll for restoration
+                });
+              }
+            }, 100);
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to restore reading progress:', e);
+      }
+    }
+
+    // Show resume indicator
+    function showResumeIndicator(progress) {
+      let indicator = document.getElementById('resume-indicator');
+      if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'resume-indicator';
+        indicator.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-primary-container)] text-[var(--color-md-on-primary-container)] px-4 py-2 rounded-full shadow-lg z-40 flex items-center gap-2 cursor-pointer';
+        indicator.innerHTML = `
+          <span class="material-symbols-outlined text-sm">play_arrow</span>
+          <span class="label-medium">继续阅读</span>
+        `;
+        indicator.addEventListener('click', () => {
+          indicator.remove();
+        });
+        document.body.appendChild(indicator);
+      }
+    }
+
+    // Debounced save
+    let saveTimeout;
+    function debouncedSave() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(saveProgress, 500);
+    }
+
+    // Initialize
+    if (articleSlug && document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        restoreProgress();
+        window.addEventListener('scroll', debouncedSave, { passive: true });
+      });
+    } else if (articleSlug) {
+      restoreProgress();
+      window.addEventListener('scroll', debouncedSave, { passive: true });
+    }
+  })();
+</script>

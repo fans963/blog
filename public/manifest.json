@@ -1,0 +1,48 @@
+{
+  "name": "My Blog",
+  "short_name": "My Blog",
+  "description": "一个 Material Design 3 风格的现代化博客",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0066cc",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["technology", "personal", "blogs"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "文章列表",
+      "short_name": "文章",
+      "description": "查看所有文章",
+      "url": "/blog",
+      "icons": [{ "src": "/favicon.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "关于",
+      "short_name": "关于",
+      "description": "关于博主",
+      "url": "/about",
+      "icons": [{ "src": "/favicon.svg", "sizes": "192x192" }]
+    }
+  ]
+}

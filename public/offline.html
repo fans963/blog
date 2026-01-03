@@ -1,0 +1,149 @@
+---
+import '../../styles/global.css';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>离线 - My Blog</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Maple Mono NF CN', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #fafafa;
+        color: #1c1c1c;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      
+      .offline-container {
+        text-align: center;
+        max-width: 400px;
+      }
+      
+      .offline-icon {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .offline-icon .material-symbols-outlined {
+        font-size: 64px;
+        color: white;
+      }
+      
+      h1 {
+        font-size: 2rem;
+        font-weight: 400;
+        margin-bottom: 1rem;
+        color: #1c1c1c;
+      }
+      
+      p {
+        font-size: 1rem;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+      
+      .refresh-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 2rem;
+        background: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 2rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      
+      .refresh-btn:hover {
+        background: #0052a3;
+      }
+      
+      .features {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e0e0e0;
+      }
+      
+      .features h2 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: #1c1c1c;
+      }
+      
+      .features ul {
+        list-style: none;
+        text-align: left;
+      }
+      
+      .features li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        color: #666;
+      }
+      
+      .features .material-symbols-outlined {
+        font-size: 20px;
+        color: #0066cc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="offline-container">
+      <div class="offline-icon">
+        <span class="material-symbols-outlined">cloud_off</span>
+      </div>
+      
+      <h1>您当前处于离线状态</h1>
+      
+      <p>无法连接到服务器，请检查您的网络连接后重试。</p>
+      
+      <button class="refresh-btn" onclick="window.location.reload()">
+        <span class="material-symbols-outlined">refresh</span>
+        重新加载
+      </button>
+      
+      <div class="features">
+        <h2>离线时您可以：</h2>
+        <ul>
+          <li>
+            <span class="material-symbols-outlined">check_circle</span>
+            浏览已缓存的文章
+          </li>
+          <li>
+            <span class="material-symbols-outlined">check_circle</span>
+            查看已访问页面的内容
+          </li>
+          <li>
+            <span class="material-symbols-outlined">check_circle</span>
+            稍后连接网络后自动同步
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

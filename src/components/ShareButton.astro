@@ -1,0 +1,18 @@
+---
+import { ShareButton as ShareButtonReact } from './react/ShareButton';
+
+interface Props {
+  title: string;
+  url?: string;
+  description?: string;
+}
+
+const { title, url, description } = Astro.props;
+---
+
+<ShareButtonReact
+  client:load
+  title={title}
+  url={url}
+  description={description}
+/>
