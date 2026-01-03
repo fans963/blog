@@ -1,5 +1,5 @@
-[install]
-registry = "https://registry.npmmirror.com"
+# [install]
+# registry = "https://registry.npmmirror.com"
 
-[install.lockfile]
-print = "text"
+# [install.lockfile]
+# print = "text"
