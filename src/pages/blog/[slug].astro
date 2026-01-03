@@ -9,6 +9,7 @@ import ShareButton from '../../components/ShareButton.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
 import ImageViewer from '../../components/ImageViewer.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
+import ViewCount from '../../components/ViewCount.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -112,6 +113,10 @@ const articleJsonLd = {
             <span class="label-medium text-[var(--color-md-on-surface-variant)] flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">schedule</span>
               {calculateReadTime(post.body)}
+            </span>
+            <span class="label-medium text-[var(--color-md-on-surface-variant)] flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">visibility</span>
+              <ViewCount slug={post.slug} showLabel={false} icon={false} />
             </span>
           </div>
 

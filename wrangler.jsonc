@@ -10,6 +10,15 @@
 		"binding": "ASSETS",
 		"directory": "./dist"
 	},
+  "kv_namespaces": [
+    {
+      "binding": "BLOG_VIEWS",
+      "id": "e3d9b8f7e68f4f8b9f27671b449f9f84"
+    }
+  ],
+  "durable_objects": {
+    "bindings": []
+  },
 	"observability": {
     "enabled": true
   }

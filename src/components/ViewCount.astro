@@ -1,0 +1,18 @@
+---
+import { ViewCount as ViewCountReact } from './react/ViewCount';
+
+interface Props {
+  slug: string;
+  showLabel?: boolean;
+  icon?: boolean;
+}
+
+const { slug, showLabel = true, icon = true } = Astro.props;
+---
+
+<ViewCountReact
+  client:load
+  slug={slug}
+  showLabel={showLabel}
+  icon={icon}
+/>
