@@ -21,14 +21,14 @@ export default defineConfig({
       [rehypeAutolinkHeadings, { behavior: 'wrap' }]
     ],
   },
-  image: {
-    service: {
-      entrypoint: 'astro/assets/services/sharp', // 继续使用 sharp
-      config: {
-        imageService: 'compile', // 强制在构建时预处理图片
-      }
-    }
-  },
+  // image: {
+  //   service: {
+  //     entrypoint: 'astro/assets/services/sharp', // 继续使用 sharp
+  //     config: {
+  //       imageService: 'compile', // 强制在构建时预处理图片
+  //     }
+  //   }
+  // },
   vite: {
     plugins: [tailwindcss()],
   },
