@@ -60,8 +60,8 @@ const { headings } = Astro.props;
       </div>
     </div>
 
-    {/* Desktop TOC Sidebar - Show only when there's enough space */}
-    <aside class="hidden fixed right-6 top-32 w-56 z-30" style="display: none;">
+    {/* Desktop TOC Sidebar - Show only when there's enough space on the right */}
+    <aside class="hidden fixed right-6 top-32 w-56 z-30">
       <div class="bg-[var(--color-md-surface)] rounded-xl border border-[var(--color-md-outline-variant)] shadow-sm overflow-hidden max-h-[calc(100vh-160px)] flex flex-col">
         <div class="p-3 border-b border-[var(--color-md-outline-variant)] flex-shrink-0">
           <h3 class="title-small text-[var(--color-md-on-surface)] flex items-center gap-2">
@@ -87,11 +87,11 @@ const { headings } = Astro.props;
       </div>
     </aside>
 
-    {/* TOC FAB - Show when desktop TOC is hidden but content has headings */}
+    {/* TOC FAB - Show when desktop TOC is hidden */}
     {headings.length > 0 && (
       <button
         id="toc-fab"
-        class="fixed z-40 w-14 h-14 rounded-full bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] shadow-lg flex items-center justify-center hover:bg-[var(--color-md-primary-container)] hover:text-[var(--color-md-on-primary-container)] transition-colors md:hidden"
+        class="fixed z-40 w-14 h-14 rounded-full bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] shadow-lg flex items-center justify-center hover:bg-[var(--color-md-primary-container)] hover:text-[var(--color-md-on-primary-container)] transition-colors toc-element"
         aria-label="显示目录"
       >
         <span class="material-symbols-outlined">list</span>
@@ -99,39 +99,49 @@ const { headings } = Astro.props;
     )}
 
     <script>
-      // TOC visibility based on available space
+      // Dynamic TOC visibility based on available space
       (function() {
         const toc = document.querySelector('aside.fixed.right-6');
         const tocFab = document.getElementById('toc-fab');
         const tocMobileOverlay = document.getElementById('toc-mobile-overlay');
         const tocMobileClose = document.getElementById('toc-mobile-close');
         const tocLinks = document.querySelectorAll('.toc-link');
-        const backToTop = document.querySelector('[class*="fixed"][class*="bottom-6"][class*="right-6"]:not(#toc-fab)');
+        const tocElements = document.querySelectorAll('.toc-element');
 
         function updateTocVisibility() {
-          if (!toc) return;
-          
-          const article = document.querySelector('article');
-          if (!article) return;
+          // Find the article content container
+          const article = document.querySelector('article .max-w-3xl');
+          if (!article || !toc || !tocFab) return;
           
           const articleRect = article.getBoundingClientRect();
           const tocWidth = 224; // w-56 = 224px
           const rightMargin = 24; // right-6 = 24px
+          
+          // Calculate available space to the right of the article
           const availableWidth = window.innerWidth - articleRect.right - rightMargin;
           
-          // Show TOC sidebar if there's enough space on the right
-          if (availableWidth >= tocWidth && window.innerWidth >= 1280) {
+          // Minimum space needed for TOC (with some buffer)
+          const minSpaceNeeded = tocWidth + 16;
+          
+          // Check if article is not full width (has space on right)
+          const hasSpaceOnRight = articleRect.right < window.innerWidth - 100;
+          
+          // Show TOC sidebar only if there's enough space on the right
+          if (hasSpaceOnRight && availableWidth >= minSpaceNeeded) {
             toc.style.display = 'block';
-            if (tocFab) tocFab.style.display = 'none';
+            tocFab.style.display = 'none';
           } else {
             toc.style.display = 'none';
-            if (tocFab) tocFab.style.display = 'flex';
+            tocFab.style.display = 'flex';
           }
         }
 
-        function adjustTocPosition() {
-          // Adjust TOC FAB position to avoid overlapping with BackToTop
-          if (!tocFab || !backToTop) return;
+        function adjustFabPosition() {
+          // Adjust FAB position to avoid overlapping with BackToTop
+          if (!tocFab) return;
+          
+          const backToTop = document.querySelector('[class*="fixed"][class*="bottom-6"][class*="right-6"]:not(.toc-element)');
+          if (!backToTop) return;
           
           const tocFabRect = tocFab.getBoundingClientRect();
           const backToTopRect = backToTop.getBoundingClientRect();
@@ -143,21 +153,25 @@ const { headings } = Astro.props;
                           tocFabRect.top > backToTopRect.bottom);
           
           if (overlap) {
-            // Move TOC FAB to the left of BackToTop
+            // Move FAB to the left of BackToTop
             tocFab.style.right = `${backToTopRect.right + 24}px`;
+          } else {
+            // Reset to default position
+            tocFab.style.right = '24px';
           }
         }
 
         // Initial check
         updateTocVisibility();
-        
+        adjustFabPosition();
+
         // Recheck on resize
         window.addEventListener('resize', () => {
           updateTocVisibility();
-          adjustTocPosition();
+          adjustFabPosition();
         });
 
-        // Recheck after scroll (for dynamic content)
+        // Recheck on scroll (for dynamic content/layout)
         window.addEventListener('scroll', () => {
           requestAnimationFrame(() => {
             updateTocVisibility();
@@ -195,7 +209,7 @@ const { headings } = Astro.props;
           link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetId = link.getAttribute('data-target');
-            const target = document.getElementById(targetId || '');
+            const target = targetId ? document.getElementById(targetId) : null;
             if (target) {
               const offset = 80;
               const elementPosition = target.getBoundingClientRect().top;
@@ -243,9 +257,12 @@ const { headings } = Astro.props;
           }
         });
 
-        // Adjust positions after a delay
-        setTimeout(adjustTocPosition, 100);
-        setTimeout(adjustTocPosition, 500);
+        // Adjust positions after layout is complete
+        setTimeout(() => {
+          updateTocVisibility();
+          adjustFabPosition();
+        }, 100);
+        setTimeout(adjustFabPosition, 500);
       })();
     </script>
 
