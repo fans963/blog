@@ -1,12 +1,14 @@
-# My Blog - Material Design 3 风格现代化博客
+# Material Design 3 风格的现代化博客
 
 <div align="center">
 
 ![Blog Preview](https://picsum.photos/seed/blog/1200/400)
 
-一个基于 **Astro + React + Material Design 3** 构建的现代化个人博客网站。
+一个基于 **Astro 5 + React 19 + Material Design 3** 构建的现代化个人博客网站，采用 Tailwind CSS v4 和 Cloudflare Pages 部署。
 
 **🇨🇳 中文** | [🇺🇸 English](./README.en.md)
+
+[![在线访问](https://img.shields.io/badge/在线访问-fans963blog.asia-blue)](https://fans963blog.asia)
 
 </div>
 
@@ -240,7 +242,7 @@ featured: false
 
 ## 📄 许可证
 
-MIT License - 详见 [LICENSE](./LICENSE)
+© 2026 fans963. 本项目采用 MIT 许可证
 
 ---
 
