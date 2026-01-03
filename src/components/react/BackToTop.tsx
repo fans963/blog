@@ -47,13 +47,14 @@ export function BackToTop({
 
   return (
     <div
-      className={`fixed z-50 transition-all duration-300 ease-out ${
+      id="back-to-top"
+      className={`fixed z-40 transition-all duration-300 ease-out ${
         positionStyles[position]
       } ${
         isVisible
           ? 'opacity-100 translate-y-0'
           : 'opacity-0 translate-y-4 pointer-events-none'
-      }`}
+      } back-to-top-floating`}
     >
       <Button
         variant="filled"

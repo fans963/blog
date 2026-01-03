@@ -255,4 +255,53 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
+
+  /* Floating buttons layout */
+  .back-to-top-floating,
+  #toc-fab {
+    position: fixed;
+    right: 24px;
+    z-index: 40;
+  }
+
+  /* BackToTop button */
+  .back-to-top-floating {
+    bottom: 24px;
+  }
+
+  /* TOC FAB - default hidden */
+  #toc-fab {
+    display: none;
+    bottom: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-md-primary, #0066cc);
+    color: var(--color-md-on-primary, #fff);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+
+  #toc-fab:hover {
+    background: var(--color-md-primary-container, #d1e3ff);
+    color: var(--color-md-on-primary-container, #003366);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  #toc-fab .material-symbols-outlined {
+    font-size: 24px;
+  }
+
+  /* When TOC FAB is visible, show it and move BackToTop up */
+  body:has(.toc-fab-visible) #toc-fab {
+    display: flex;
+  }
+
+  body:has(.toc-fab-visible) .back-to-top-floating {
+    bottom: 96px;
+  }
 </style>

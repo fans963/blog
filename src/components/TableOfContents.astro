@@ -91,7 +91,7 @@ const { headings } = Astro.props;
     {headings.length > 0 && (
       <button
         id="toc-fab"
-        class="fixed z-40 bottom-6 right-6 w-14 h-14 rounded-full bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] shadow-lg flex items-center justify-center hover:bg-[var(--color-md-primary-container)] hover:text-[var(--color-md-on-primary-container)] transition-colors toc-element"
+        class="fixed z-40 bottom-6 right-6 w-14 h-14 rounded-full bg-[var(--color-md-primary)] text-[var(--color-md-on-primary)] shadow-lg flex items-center justify-center hover:bg-[var(--color-md-primary-container)] hover:text-[var(--color-md-on-primary-container)] transition-colors toc-element toc-fab-visible"
         aria-label="显示目录"
       >
         <span class="material-symbols-outlined">list</span>
@@ -111,7 +111,7 @@ const { headings } = Astro.props;
         function updateTocVisibility() {
           // Find the article content container
           const article = document.querySelector('article .max-w-3xl');
-          if (!article || !toc || !tocFab) return;
+          if (!toc || !tocFab) return;
           
           const articleRect = article.getBoundingClientRect();
           const tocWidth = 224; // w-56 = 224px
@@ -127,12 +127,13 @@ const { headings } = Astro.props;
           const hasSpaceOnRight = articleRect.right < window.innerWidth - 100;
           
           // Show TOC sidebar only if there's enough space on the right
+          // TOC FAB visibility is controlled by CSS based on .toc-fab-visible class
           if (hasSpaceOnRight && availableWidth >= minSpaceNeeded) {
             toc.style.display = 'block';
-            tocFab.style.display = 'none';
+            tocFab?.classList.remove('toc-fab-visible');
           } else {
             toc.style.display = 'none';
-            tocFab.style.display = 'flex';
+            tocFab?.classList.add('toc-fab-visible');
           }
         }
 
