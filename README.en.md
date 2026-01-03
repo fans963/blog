@@ -242,7 +242,7 @@ This is an experimental project developed with AI assistance. Contributions are 
 
 ## 📄 License
 
-This project is licensed under the MIT License
+© 2026 fans963. This project is licensed under the MIT License
 
 ---
 
