@@ -11,7 +11,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://fans963blog.asia', // 修改为你的实际域名
   integrations: [mdx(), sitemap(), react()],
 
   vite: {

@@ -499,3 +499,173 @@ html:not(.light) .md-button-filled {
     opacity: 1;
   }
 }
+
+/* ===========================================
+   MDX Code Block Styling (Shiki)
+   =========================================== */
+
+/* Base code block container */
+pre.astro-code,
+pre[class*="language-"] {
+  background-color: var(--color-md-surface-variant) !important;
+  border-radius: var(--md-shape-corner-large);
+  padding: 1.25rem 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  font-family: var(--md-font-family);
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid var(--color-md-outline-variant);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+
+pre.astro-code:hover,
+pre[class*="language-"]:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Inline code styling */
+code.astro-code,
+:not(pre) > code,
+code[class*="language-"] {
+  background-color: var(--color-md-surface-variant);
+  color: var(--color-md-on-surface-variant);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--md-shape-corner-small);
+  font-family: var(--md-font-family);
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+/* Code content styling */
+pre.astro-code code,
+pre[class*="language-"] code {
+  color: inherit;
+  background: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* Custom scrollbar for code blocks */
+pre.astro-code::-webkit-scrollbar,
+pre[class*="language-"]::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+pre.astro-code::-webkit-scrollbar-track,
+pre[class*="language-"]::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+pre.astro-code::-webkit-scrollbar-thumb,
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+  background-color: var(--color-md-outline);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+
+pre.astro-code::-webkit-scrollbar-thumb:hover,
+pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-md-on-surface-variant);
+}
+
+pre.astro-code::-webkit-scrollbar-corner,
+pre[class*="language-"]::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox scrollbar */
+pre.astro-code,
+pre[class*="language-"] {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-md-outline) transparent;
+}
+
+/* Code block in dark mode */
+html.dark pre.astro-code,
+html.dark pre[class*="language-"],
+html:not(.light) pre.astro-code,
+html:not(.light) pre[class*="language-"] {
+  background-color: rgba(40, 40, 40, 0.95) !important;
+  border-color: var(--color-md-outline-variant);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+html.dark pre.astro-code:hover,
+html.dark pre[class*="language-"]:hover,
+html:not(.light) pre.astro-code:hover,
+html:not(.light) pre[class*="language-"]:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+
+html.dark pre.astro-code::-webkit-scrollbar-thumb,
+html.dark pre[class*="language-"]::-webkit-scrollbar-thumb,
+html:not(.light) pre.astro-code::-webkit-scrollbar-thumb,
+html:not(.light) pre[class*="language-"]::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+html.dark pre.astro-code::-webkit-scrollbar-thumb:hover,
+html.dark pre[class*="language-"]::-webkit-scrollbar-thumb:hover,
+html:not(.light) pre.astro-code::-webkit-scrollbar-thumb:hover,
+html:not(.light) pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+html.dark pre.astro-code,
+html.dark pre[class*="language-"],
+html:not(.light) pre.astro-code,
+html:not(.light) pre[class*="language-"] {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Inline code in dark mode */
+html.dark code.astro-code,
+html.dark :not(pre) > code,
+html.dark code[class*="language-"],
+html:not(.light) code.astro-code,
+html:not(.light) :not(pre) > code,
+html:not(.light) code[class*="language-"] {
+  background-color: rgba(80, 80, 80, 0.9);
+  color: var(--color-md-on-surface-variant);
+}
+
+/* Spacing around code blocks in paragraphs */
+p + pre.astro-code,
+p + pre[class*="language-"],
+p + code.astro-code {
+  margin-top: 1rem;
+}
+
+pre.astro-code + p,
+pre[class*="language-"] + p,
+code.astro-code + * {
+  margin-top: 1rem;
+}
+
+/* Code block in lists */
+li pre.astro-code,
+li pre[class*="language-"] {
+  margin: 1rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  pre.astro-code,
+  pre[class*="language-"] {
+    padding: 1rem 0.75rem;
+    margin: 1rem -1rem;
+    border-radius: var(--md-shape-corner-medium);
+    border-left: none;
+    border-right: none;
+    width: calc(100% + 2rem);
+  }
+}

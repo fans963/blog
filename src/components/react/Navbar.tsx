@@ -27,9 +27,12 @@ export function Navbar({ active = 'home' }: NavbarProps) {
           {/* Logo */}
           <a href="/" className="navbar-logo">
             <div className="logo-icon">
-              <span className="material-symbols-outlined text-sm">edit</span>
+              <img
+                src="https://avatars.githubusercontent.com/u/162014251?s=400&u=927aeed6f6ce20823207ea362303ea3b952c2a65&v=4"
+                alt="Avatar" className="w-10 h-8 rounded-sm"
+              />
             </div>
-            <span className="logo-text title-medium">My Blog</span>
+            <span className="logo-text title-medium">fans963 Blog</span>
           </a>
 
           {/* Nav Items - Hide on very small screens */}
