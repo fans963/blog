@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
 
-const CACHE_NAME = 'my-blog-v1';
-const STATIC_CACHE = 'static-v1';
-const DYNAMIC_CACHE = 'dynamic-v1';
+const CACHE_NAME = 'my-blog-v2';
+const STATIC_CACHE = 'static-v2';
+const DYNAMIC_CACHE = 'dynamic-v2';
 
 // Resources to cache immediately on install
 const STATIC_RESOURCES = [
@@ -72,28 +72,30 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // HTML pages - network first with cache fallback
+  // HTML pages - network only (always get fresh content)
   if (request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(request)
         .then((response) => {
           // Clone the response before caching
           const responseClone = response.clone();
-          
-          // Cache the fetched response
-          caches.open(DYNAMIC_CACHE).then((cache) => {
-            cache.put(request, responseClone);
-          });
-          
+
+          // Cache a fresh copy for offline use (but prefer network)
+          if (response.ok) {
+            caches.open(DYNAMIC_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+
           return response;
         })
         .catch(() => {
-          // Network failed, try cache
+          // Network failed, try cache as fallback
           return caches.match(request).then((cachedResponse) => {
             if (cachedResponse) {
               return cachedResponse;
             }
-            
+
             // If no cache, return offline page for navigation
             return caches.match('/offline.html');
           });
