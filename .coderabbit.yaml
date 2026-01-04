@@ -3,8 +3,6 @@
 
 # Language and framework settings
 language: "zh-CN"  # Chinese language for reviews
-early_access: false
-enable_free_tier: true
 
 # Review settings
 reviews:
