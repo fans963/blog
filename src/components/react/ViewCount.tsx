@@ -8,6 +8,11 @@ interface ViewCountProps {
   icon?: boolean;
 }
 
+interface ViewCountResponse {
+  slug: string;
+  views: number;
+}
+
 export function ViewCount({ slug, showLabel = true, icon = true }: ViewCountProps) {
   const [count, setCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,11 +31,11 @@ export function ViewCount({ slug, showLabel = true, icon = true }: ViewCountProp
           headers: { 'Content-Type': 'application/json' }
         });
         if (!postResponse.ok) throw new Error('Failed to increment');
-        
+
         // Get updated count
         const getResponse = await fetch(`/api/views/${slug}`);
         if (!getResponse.ok) throw new Error('Failed to fetch');
-        const data = await getResponse.json();
+        const data: ViewCountResponse = await getResponse.json();
         setCount(data.views);
       } catch (e) {
         console.warn('Failed to fetch view count:', e);

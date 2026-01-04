@@ -20,7 +20,6 @@ const positionStyles = {
 
 export function BackToTop({
   threshold = 300,
-  duration = 500,
   position = 'bottom-right',
 }: BackToTopProps) {
   const [isVisible, setIsVisible] = useState(false);

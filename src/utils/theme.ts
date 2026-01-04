@@ -4,7 +4,6 @@ import {
   argbFromHex,
   themeFromSourceColor,
   applyTheme,
-  sourceColorFromImage,
 } from '@material/material-color-utilities';
 
 /**

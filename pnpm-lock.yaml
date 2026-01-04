@@ -69,6 +69,9 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
     devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20260103.0
+        version: 4.20260103.0
       tailwindcss-react-aria-components:
         specifier: ^2.0.1
         version: 2.0.1(tailwindcss@4.1.18)

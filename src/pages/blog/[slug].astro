@@ -80,7 +80,7 @@ const articleJsonLd = {
 ---
 
 <BaseLayout title={`${post.data.title} - My Blog`} image={post.data.image}>
-  <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(articleJsonLd)} />
   <ReadingProgress />
   <TableOfContents headings={tocHeadings} />
   <Navbar />
@@ -186,7 +186,7 @@ const articleJsonLd = {
           <div class="mt-12 pt-8 border-t border-[var(--color-md-outline-variant)] mb-16">
             <h2 class="title-large text-[var(--color-md-on-background)] mb-6">评论</h2>
             <div class="giscus-container">
-              <script src="https://giscus.app/client.js"
+              <script is:inline src="https://giscus.app/client.js"
                 data-repo="fans963/blog"
                 data-repo-id="R_kgDOQzDClA"
                 data-category="Announcements"

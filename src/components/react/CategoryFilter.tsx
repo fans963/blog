@@ -1,6 +1,5 @@
 'use client';
 
-import type { TabListProps, TabPanelProps } from 'react-aria-components';
 import { Tabs, TabList, Tab as ReactAriaTab } from 'react-aria-components';
 import { forwardRef } from 'react';
 
