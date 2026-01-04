@@ -20,7 +20,7 @@
   --color-md-error: rgb(var(--md-sys-color-error));
   --color-md-on-error: rgb(var(--md-sys-color-on-error));
   --color-md-error-container: rgb(var(--md-sys-color-error-container));
-  --color-md-on-error-container: rgb(var(--md-sys-color-on-error-container));
+  --color-md-on-error-container: rgb(var(--md-sys-color-error-container));
 
   --color-md-surface: rgb(var(--md-sys-color-surface));
   --color-md-on-surface: rgb(var(--md-sys-color-on-surface));
@@ -54,6 +54,11 @@
   --md-motion-duration-short: 200ms;
   --md-motion-duration-medium: 400ms;
   --md-motion-duration-long: 500ms;
+}
+
+/* Safe area for notched phones */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* Base styles */
@@ -538,7 +543,7 @@ pre[class*="language-"] {
   background-color: var(--color-md-surface-variant) !important;
   border-radius: var(--md-shape-corner-large);
   padding: 1.25rem 1rem;
-  margin: 1.5rem 0;
+  margin: 1.5rem 0.4rem;
   overflow-x: auto;
   overflow-y: hidden;
   font-family: var(--md-font-family);

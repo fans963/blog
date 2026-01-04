@@ -224,9 +224,13 @@ const articleJsonLd = {
 
   // 更新 Giscus 主题
   function updateGiscusTheme() {
-    const isDark = document.documentElement.classList.contains('dark');
+    // 从 localStorage 获取主题状态，而不是依赖 DOM class
+    // 因为页面加载时 DOM class 的设置可能是异步的
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
     const theme = isDark ? 'dark' : 'light';
-    
+
     sendGiscusMessage({
       setConfig: {
         theme: theme
@@ -236,7 +240,7 @@ const articleJsonLd = {
 
   // 初始化
   function init() {
-    // 初始设置主题
+    // 立即更新主题，不要等待 DOMContentLoaded
     updateGiscusTheme();
 
     // 监听暗色模式变化
@@ -247,12 +251,17 @@ const articleJsonLd = {
       attributeFilter: ['class']
     });
 
-    // 监听主题切换按钮
+    // 监听主题切换按钮点击
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.closest('#theme-toggle')) {
         setTimeout(updateGiscusTheme, 150);
       }
+    });
+
+    // 监听来自其他页面（欢迎页）的主题变化事件
+    window.addEventListener('md3-theme-changed', () => {
+      updateGiscusTheme();
     });
   }
 
@@ -399,12 +408,14 @@ const articleJsonLd = {
       
       const indicator = document.createElement('div');
       indicator.id = 'resume-indicator';
-      indicator.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--color-md-primary-container)] text-[var(--color-md-on-primary-container)] px-4 py-2 rounded-full shadow-lg z-40 flex items-center gap-2 cursor-pointer transition-opacity duration-300';
-      indicator.style.opacity = '0';
+      // 移动端使用更高的 z-index 避免被覆盖，添加底部安全区域支持
+      indicator.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 md:bottom-8 bg-[var(--color-md-primary-container)] text-[var(--color-md-on-primary-container)] px-4 py-2.5 rounded-full shadow-lg z-50 flex items-center gap-2 cursor-pointer transition-all duration-300';
       indicator.innerHTML = `
         <span class="material-symbols-outlined text-sm">play_arrow</span>
         <span class="label-medium">继续阅读</span>
       `;
+      indicator.style.opacity = '0';
+      indicator.style.transform = 'translateX(-50%) translateY(10px)';
       
       // Click to resume reading
       indicator.addEventListener('click', () => {
@@ -413,14 +424,18 @@ const articleJsonLd = {
           behavior: 'smooth'
         });
         indicator.style.opacity = '0';
-        setTimeout(() => indicator.remove(), 300);
+        indicator.style.transform = 'translateX(-50%) translateY(10px)';
+        setTimeout(() => {
+          if (indicator.parentElement) indicator.remove();
+        }, 300);
       });
       
       document.body.appendChild(indicator);
-      
-      // Fade in
+
+      // Fade in with slide animation
       requestAnimationFrame(() => {
         indicator.style.opacity = '1';
+        indicator.style.transform = 'translateX(-50%) translateY(0)';
       });
       
       // Auto-hide after 5 seconds if not clicked

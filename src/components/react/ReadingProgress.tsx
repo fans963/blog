@@ -66,7 +66,7 @@ export function ReadingProgress({
 
   return (
     <div
-      className="fixed top-[64px] left-0 right-0 z-40 pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-[60] pointer-events-none safe-area-top"
       style={{ height: `${height}px` }}
     >
       <div
