@@ -162,7 +162,7 @@ path_filters:
 # Knowledge base for project-specific context
 knowledge_base:
   learnings:
-    scope: "project"
+    scope: "auto"
 
   # Project-specific terms and context
   opt_out: false
