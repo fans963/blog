@@ -10,7 +10,7 @@ enable_free_tier: true
 reviews:
   # Review profile
   profile: "chill"  # Options: "chill", "assertive", "aggressive"
-  
+
   # Auto-review configuration
   auto_review:
     enabled: true
@@ -19,74 +19,74 @@ reviews:
       - main
       - master
       - develop
-  
+
   # Request changes on critical issues
   request_changes_workflow: false
-  
+
   # Review effort estimation
   high_level_summary: true
   high_level_summary_placeholder: "## CodeRabbit 总结"
-  
+
   # Poem and review notes
   poem: true
   review_status: true
-  
+
   # Collapse walkthrough details
   collapse_walkthrough: false
-  
+
   # Sequence diagrams for complex changes
   sequence_diagrams: true
-  
+
   # Auto-reply to user comments
   auto_reply: true
-  
+
   # Tools
   tools:
     github-checks:
       enabled: true
       timeout_ms: 90000
-    
+
     shellcheck:
       enabled: true
-    
+
     ruff:
       enabled: false  # Python not used
-    
+
     markdownlint:
       enabled: true
-    
+
     languagetool:
       enabled: true
       enabled_only: false
       level: "default"
-    
+
     biome:
       enabled: false
-    
+
     hadolint:
       enabled: false  # Docker not used
-    
+
     swiftlint:
       enabled: false
-    
+
     phpstan:
       enabled: false
-    
+
     golangci-lint:
       enabled: false
-    
+
     yamllint:
       enabled: true
-    
+
     gitleaks:
       enabled: true  # Security: check for secrets
-    
+
     eslint:
       enabled: true
-    
+
     ktlint:
       enabled: false
-    
+
     detekt:
       enabled: false
 
@@ -102,7 +102,7 @@ path_instructions:
       - 优先使用接口而非类型别名定义对象结构
       - 检查是否有未使用的导入
       - 遵循项目的 TypeScript 编码规范
-  
+
   - path: "**/*.tsx"
     instructions: |
       - 确保组件的 Props 类型定义完整
@@ -111,7 +111,7 @@ path_instructions:
       - 确保无障碍性(a11y)最佳实践
       - 避免不必要的 re-render
       - 使用 React 19 的新特性时确保语法正确
-  
+
   - path: "**/*.astro"
     instructions: |
       - 确保 frontmatter 语法正确
@@ -119,20 +119,20 @@ path_instructions:
       - 优化静态生成性能
       - 确保正确使用 Astro Islands 模式
       - 检查 client:* 指令的使用是否合理
-  
+
   - path: "**/*.mdx"
     instructions: |
       - 检查 frontmatter 格式是否正确
       - 确保所有必需字段存在（title, description, date, category）
       - 检查图片链接和外部链接
       - 确保 Markdown 语法正确
-  
+
   - path: "**/package.json"
     instructions: |
       - 检查依赖版本是否合理
       - 确保 scripts 命令正确
       - 注意安全漏洞
-  
+
   - path: "**/*.config.{js,mjs,ts}"
     instructions: |
       - 检查配置项是否完整
@@ -165,7 +165,7 @@ path_filters:
 knowledge_base:
   learnings:
     scope: "project"
-  
+
   # Project-specific terms and context
   opt_out: false
 
@@ -174,7 +174,7 @@ repository:
   # Auto-title PR based on changes
   auto_title:
     enabled: false
-  
+
   # Auto-label PRs
   auto_label:
     enabled: true
