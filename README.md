@@ -47,6 +47,7 @@
 - **Tailwind CSS v4** - 现代化的原子化 CSS
 - **Cloudflare Pages** - 全球边缘部署
 - **Content Collections** - 类型安全的文章管理
+- **CodeRabbit AI** - AI 驱动的代码审查
 
 ---
 
@@ -77,6 +78,7 @@
 | [wrangler](https://developers.cloudflare.com/wrangler) |部署工具链 |
 | [GitHub Actions](https://github.com/features/actions) | CI/CD 自动化 |
 | [Giscus](https://giscus.app) | GitHub Discussions 评论系统 |
+| [CodeRabbit](https://coderabbit.ai) | AI 代码审查 |
 
 ---
 
@@ -238,6 +240,10 @@ featured: false
 - 提交 PR 改进代码
 - 提出功能建议
 
+### 代码审查
+
+本项目已配置 [CodeRabbit AI 代码审查](./.github/CODERABBIT.md)，所有 PR 都会自动获得 AI 审查建议。详细使用说明请查看 [CodeRabbit 配置文档](./.github/CODERABBIT.md)。
+
 ---
 
 ## 📄 许可证
@@ -253,6 +259,7 @@ featured: false
 - [Tailwind CSS](https://tailwindcss.com) - 快速的 CSS 框架
 - [Giscus](https://giscus.app) - 基于 GitHub Discussions 的评论系统
 - [Cloudflare Pages](https://pages.cloudflare.com) - 快速的全球部署
+- [CodeRabbit](https://coderabbit.ai) - AI 驱动的代码审查工具
 
 ---
 

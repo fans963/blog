@@ -47,6 +47,7 @@ This project was almost entirely built with AI assistance, demonstrating the pot
 - **Tailwind CSS v4** - Modern atomic CSS framework
 - **Cloudflare Pages** - Global edge deployment
 - **Content Collections** - Type-safe article management
+- **CodeRabbit AI** - AI-powered code review
 
 ---
 
@@ -77,6 +78,7 @@ This project was almost entirely built with AI assistance, demonstrating the pot
 | [wrangler](https://developers.cloudflare.com/wrangler) | Deployment toolchain |
 | [GitHub Actions](https://github.com/features/actions) | CI/CD automation |
 | [Giscus](https://giscus.app) | GitHub Discussions comment system |
+| [CodeRabbit](https://coderabbit.ai) | AI code review |
 
 ---
 
@@ -238,6 +240,10 @@ This is an experimental project developed with AI assistance. Contributions are 
 - Submit PRs to improve the code
 - Suggest new features
 
+### Code Review
+
+This project uses [CodeRabbit AI code review](./.github/CODERABBIT.md). All PRs will automatically receive AI-powered review suggestions. See the [CodeRabbit configuration documentation](./.github/CODERABBIT.md) for details.
+
 ---
 
 ## 📄 License
@@ -253,6 +259,7 @@ This is an experimental project developed with AI assistance. Contributions are 
 - [Tailwind CSS](https://tailwindcss.com) - Fast CSS framework
 - [Giscus](https://giscus.app) - GitHub Discussions-based comment system
 - [Cloudflare Pages](https://pages.cloudflare.com) - Fast global deployment
+- [CodeRabbit](https://coderabbit.ai) - AI-powered code review tool
 
 ---
 
