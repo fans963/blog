@@ -50,6 +50,7 @@ function applyThemeColor(hexColor: string, isDark: boolean) {
   applyTheme(theme, { target: document.body, dark: isDark });
   
   // 映射到 CSS 变量
+  const root = document.documentElement;
   const scheme = isDark ? theme.schemes.dark : theme.schemes.light;
   Object.entries(scheme).forEach(([key, value]) => {
     root.style.setProperty(`--md-sys-color-${key}`, argbToRgb(value));
