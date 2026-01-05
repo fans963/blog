@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { BackToTopComponent } from '../components/angular/back-to-top.component';
+import BackToTopNg from '../components/BackToTop-ng.astro';
 
 interface Props {
   title: string;
@@ -114,7 +114,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body style="min-height: 100vh; display: flex; flex-direction: column;">
     <slot />
-    <BackToTopComponent client:load />
+    <BackToTopNg />
   </body>
 </html>
 

@@ -1,5 +1,5 @@
 /* Import Angular Material theme */
-@import './material-theme.scss';
+@import './material-theme.css';
 
 /* Material Design 3 CSS Variables */
 :root {
@@ -324,6 +324,62 @@ a:hover {
   font-weight: 500;
   line-height: 16px;
   letter-spacing: 0.5px;
+}
+
+/* Button Styles */
+.btn-filled,
+.btn-outlined,
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-filled {
+  background-color: rgb(var(--md-sys-color-primary));
+  color: rgb(var(--md-sys-color-on-primary));
+}
+
+.btn-filled:hover {
+  background-color: rgb(var(--md-sys-color-primary-container));
+  color: rgb(var(--md-sys-color-on-primary-container));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outlined {
+  background-color: transparent;
+  border: 1px solid rgb(var(--md-sys-color-outline));
+  color: rgb(var(--md-sys-color-primary));
+}
+
+.btn-outlined:hover {
+  background-color: rgba(var(--md-sys-color-primary), 0.08);
+  border-color: rgb(var(--md-sys-color-primary));
+}
+
+.btn-text {
+  background-color: transparent;
+  color: rgb(var(--md-sys-color-primary));
+}
+
+.btn-text:hover {
+  background-color: rgba(var(--md-sys-color-primary), 0.08);
+}
+
+.btn-filled .material-symbols-outlined,
+.btn-outlined .material-symbols-outlined,
+.btn-text .material-symbols-outlined {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 /* Utility Classes */

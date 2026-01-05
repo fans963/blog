@@ -4,7 +4,6 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NavbarNg from '../components/Navbar-ng.astro';
 import FooterNg from '../components/Footer-ng.astro';
-import { ButtonComponent } from '../components/angular/button.component';
 
 // Get all blog posts
 const allPosts: CollectionEntry<'blog'>[] = await getCollection('blog');
@@ -50,12 +49,14 @@ function formatDate(date: Date): string {
           </p>
 
           <div class="hero-actions">
-            <ButtonComponent variant="filled" icon="explore" href="/blog" client:load>
+            <a href="/blog" class="btn-filled">
+              <span class="material-symbols-outlined">explore</span>
               浏览文章
-            </ButtonComponent>
-            <ButtonComponent variant="outlined" icon="info" href="/about" client:load>
+            </a>
+            <a href="/about" class="btn-outlined">
+              <span class="material-symbols-outlined">info</span>
               关于本站
-            </ButtonComponent>
+            </a>
           </div>
         </div>
 
