@@ -19,6 +19,7 @@
     "@angular/material": "^20.0.0",
     "@angular/platform-browser": "^20.0.0",
     "@angular/platform-browser-dynamic": "^20.0.0",
+    "@angular/platform-server": "^20.3.15",
     "@astrojs/check": "^0.9.6",
     "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/mdx": "^4.3.13",
@@ -36,6 +37,9 @@
     "zone.js": "^0.15.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^20.3.13",
+    "@angular/build": "^20.3.13",
+    "@angular/compiler-cli": "^20.3.15",
     "@cloudflare/workers-types": "^4.20260103.0",
     "wrangler": "^4.56.0"
   }

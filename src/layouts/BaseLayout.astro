@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import BackToTop from '../components/BackToTop.astro';
+import { BackToTopComponent } from '../components/angular/back-to-top.component';
 
 interface Props {
   title: string;
@@ -8,7 +8,7 @@ interface Props {
   image?: string;
 }
 
-const { title, description = '一个 Material Design 3 风格的现代化博客', image = '/og-image.png' } = Astro.props;
+const { title, description = '一个基于 Astro + Angular + Material Design 的现代化博客', image = '/og-image.png' } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -112,9 +112,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       }
     </style>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body style="min-height: 100vh; display: flex; flex-direction: column;">
     <slot />
-    <BackToTop />
+    <BackToTopComponent client:load />
   </body>
 </html>
 

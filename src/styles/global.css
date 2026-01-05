@@ -1,6 +1,8 @@
-@import "tailwindcss";
+/* Import Angular Material theme */
+@import './material-theme.scss';
 
-@theme {
+/* Material Design 3 CSS Variables */
+:root {
   /* Material Design 3 Colors - Light Theme (Default) */
   --color-md-primary: rgb(var(--md-sys-color-primary));
   --color-md-on-primary: rgb(var(--md-sys-color-on-primary));
@@ -20,7 +22,7 @@
   --color-md-error: rgb(var(--md-sys-color-error));
   --color-md-on-error: rgb(var(--md-sys-color-on-error));
   --color-md-error-container: rgb(var(--md-sys-color-error-container));
-  --color-md-on-error-container: rgb(var(--md-sys-color-error-container));
+  --color-md-on-error-container: rgb(var(--md-sys-color-on-error-container));
 
   --color-md-surface: rgb(var(--md-sys-color-surface));
   --color-md-on-surface: rgb(var(--md-sys-color-on-surface));
@@ -56,15 +58,18 @@
   --md-motion-duration-long: 500ms;
 }
 
-/* Safe area for notched phones */
-.safe-area-top {
-  padding-top: env(safe-area-inset-top, 0px);
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Base styles */
 html {
   font-family: var(--md-font-family);
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -72,6 +77,7 @@ body {
   color: var(--color-md-on-background);
   transition: background-color var(--md-motion-duration-medium) var(--md-motion-easing-standard),
               color var(--md-motion-duration-medium) var(--md-motion-easing-standard);
+  line-height: 1.6;
 }
 
 /* Dark mode transition overlay */
@@ -91,8 +97,84 @@ html:not(.light)::before {
   opacity: 0.05;
 }
 
-/* Image lightbox transition */
+/* Image styles */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Link styles */
+a {
+  color: var(--color-md-primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--color-md-primary-container);
+}
+
+/* Prose/Content styles */
+.prose {
+  max-width: 65ch;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--color-md-on-surface);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: var(--color-md-on-surface);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.prose h1 {
+  font-size: 2.25rem;
+}
+
+.prose h2 {
+  font-size: 1.875rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+}
+
+.prose p {
+  margin-bottom: 1.25em;
+}
+
+.prose code {
+  background-color: rgba(var(--md-sys-color-surface-variant), 0.5);
+  padding: 0.125rem 0.25rem;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+
+.prose pre {
+  background-color: rgba(var(--md-sys-color-surface-variant), 0.5);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
 .prose img {
+  border-radius: var(--md-shape-corner-large);
+  margin: 2em 0;
   transition: transform var(--md-motion-duration-short) var(--md-motion-easing-standard),
               box-shadow var(--md-motion-duration-short) var(--md-motion-easing-standard);
 }
@@ -102,7 +184,43 @@ html:not(.light)::before {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* Material Design 3 Typography */
+.prose ul,
+.prose ol {
+  margin-left: 1.5em;
+  margin-bottom: 1.25em;
+}
+
+.prose li {
+  margin-bottom: 0.5em;
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--color-md-primary);
+  padding-left: 1rem;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: var(--color-md-on-surface-variant);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+}
+
+.prose th,
+.prose td {
+  padding: 0.75rem;
+  border: 1px solid var(--color-md-outline-variant);
+  text-align: left;
+}
+
+.prose th {
+  background-color: rgba(var(--md-sys-color-surface-variant), 0.5);
+  font-weight: 600;
+}
+
+/* Material Design 3 Typography Classes */
 .display-large {
   font-size: 57px;
   font-weight: 400;
@@ -208,497 +326,71 @@ html:not(.light)::before {
   letter-spacing: 0.5px;
 }
 
-/* Material Design 3 Surface Tones */
-.surface-tonal {
-  background-color: var(--color-md-surface-variant);
-  color: var(--color-md-on-surface-variant);
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* Card styles */
-.md-card {
-  background-color: var(--color-md-surface);
-  border-radius: var(--md-shape-corner-large);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-  transition: box-shadow var(--md-motion-duration-medium) var(--md-motion-easing-emphasized),
-              transform var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+.grid {
+  display: grid;
+  gap: 1rem;
 }
 
-.md-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
-/* Filled button */
-.md-button-filled {
-  background-color: var(--color-md-primary);
-  color: var(--color-md-on-primary);
-  border-radius: var(--md-shape-corner-full);
-  padding: 10px 24px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.1px;
-  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard),
-              box-shadow var(--md-motion-duration-short) var(--md-motion-easing-standard);
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.md-button-filled:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.md-button-filled:active {
-  background-color: var(--color-md-primary);
-}
-
-/* Tonal button */
-.md-button-tonal {
-  background-color: var(--color-md-secondary-container);
-  color: var(--color-md-on-secondary-container);
-  border-radius: var(--md-shape-corner-full);
-  padding: 10px 24px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.1px;
-  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard),
-              box-shadow var(--md-motion-duration-short) var(--md-motion-easing-standard);
-}
-
-.md-button-tonal:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-}
-
-/* Outlined button */
-.md-button-outlined {
-  background-color: transparent;
-  color: var(--color-md-primary);
-  border: 1px solid var(--color-md-outline);
-  border-radius: var(--md-shape-corner-full);
-  padding: 10px 24px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.1px;
-  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard),
-              border-color var(--md-motion-duration-short) var(--md-motion-easing-standard);
-}
-
-.md-button-outlined:hover {
-  background-color: rgba(var(--md-sys-color-primary), 0.08);
-}
-
-/* Text button */
-.md-button-text {
-  background-color: transparent;
-  color: var(--color-md-primary);
-  border-radius: var(--md-shape-corner-full);
-  padding: 10px 12px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.1px;
-  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard);
-}
-
-.md-button-text:hover {
-  background-color: rgba(var(--md-sys-color-primary), 0.08);
-}
-
-/* FAB (Floating Action Button) */
-.md-fab {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--md-shape-corner-large);
-  background-color: var(--color-md-primary-container);
-  color: var(--color-md-on-primary-container);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
-  transition: box-shadow var(--md-motion-duration-short) var(--md-motion-easing-standard),
-              transform var(--md-motion-duration-short) var(--md-motion-easing-standard);
-}
-
-.md-fab:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.12);
-  transform: scale(1.02);
-}
-
-/* Navigation Bar */
-.md-nav-bar {
-  background-color: var(--color-md-surface);
-  border-bottom: 1px solid var(--color-md-outline-variant);
-}
-
-/* Chips */
-.md-chip {
-  background-color: var(--color-md-surface-variant);
-  color: var(--color-md-on-surface-variant);
-  border-radius: var(--md-shape-corner-small);
-  padding: 6px 16px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard);
-}
-
-.md-chip:hover {
-  background-color: rgba(var(--md-sys-color-on-surface-variant), 0.1);
-}
-
-/* Chip selected */
-.md-chip-selected {
-  background-color: var(--color-md-secondary-container);
-  color: var(--color-md-on-secondary-container);
-}
-
-/* Icon button */
-.md-icon-button {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--md-shape-corner-full);
+.flex {
   display: flex;
+}
+
+.items-center {
   align-items: center;
-  justify-content: center;
-  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard);
 }
 
-.md-icon-button:hover {
-  background-color: rgba(var(--md-sys-color-on-surface), 0.08);
+.justify-between {
+  justify-content: space-between;
 }
 
-/* Divider */
-.md-divider {
-  border-color: var(--color-md-outline-variant);
+.gap-1 {
+  gap: 0.25rem;
 }
 
-/* Search bar */
-.md-search-bar {
-  background-color: var(--color-md-surface-variant);
-  border-radius: var(--md-shape-corner-full);
-  padding: 12px 16px;
-  color: var(--color-md-on-surface-variant);
+.gap-2 {
+  gap: 0.5rem;
 }
 
-/* Material Design 3 elevation levels */
-.elevation-1 {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-}
-
-.elevation-2 {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-.elevation-3 {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.12);
-}
-
-.elevation-4 {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16), 0 4px 8px rgba(0, 0, 0, 0.12);
-}
-
-/* Dark theme support using class */
-html.dark {
-  --md-sys-color-primary: 155, 212, 255;
-  --md-sys-color-on-primary: 0, 51, 102;
-  --md-sys-color-primary-container: 0, 77, 153;
-  --md-sys-color-on-primary-container: 209, 227, 255;
-
-  --md-sys-color-secondary: 198, 198, 198;
-  --md-sys-color-on-secondary: 32, 32, 32;
-  --md-sys-color-secondary-container: 64, 64, 64;
-  --md-sys-color-on-secondary-container: 224, 224, 224;
-
-  --md-sys-color-tertiary: 233, 192, 127;
-  --md-sys-color-on-tertiary: 58, 37, 10;
-  --md-sys-color-tertiary-container: 84, 54, 21;
-  --md-sys-color-on-tertiary-container: 246, 217, 169;
-
-  --md-sys-color-error: 255, 180, 175;
-  --md-sys-color-on-error: 74, 0, 0;
-  --md-sys-color-error-container: 120, 30, 29;
-  --md-sys-color-on-error-container: 255, 180, 175;
-
-  --md-sys-color-surface: 28, 28, 28;
-  --md-sys-color-on-surface: 226, 226, 226;
-  --md-sys-color-surface-variant: 64, 64, 64;
-  --md-sys-color-on-surface-variant: 198, 198, 198;
-  --md-sys-color-surface-tint: 155, 212, 255;
-
-  --md-sys-color-background: 28, 28, 28;
-  --md-sys-color-on-background: 226, 226, 226;
-
-  --md-sys-color-outline: 96, 96, 96;
-  --md-sys-color-outline-variant: 64, 64, 64;
-
-  --md-sys-color-inverse-surface: 226, 226, 226;
-  --md-sys-color-inverse-on-surface: 47, 47, 47;
-  --md-sys-color-inverse-primary: 0, 102, 204;
-}
-
-/* System dark mode preference */
-@media (prefers-color-scheme: dark) {
-  html:not(.light) {
-    --md-sys-color-primary: 155, 212, 255;
-    --md-sys-color-on-primary: 0, 51, 102;
-    --md-sys-color-primary-container: 0, 77, 153;
-    --md-sys-color-on-primary-container: 209, 227, 255;
-
-    --md-sys-color-secondary: 198, 198, 198;
-    --md-sys-color-on-secondary: 32, 32, 32;
-    --md-sys-color-secondary-container: 64, 64, 64;
-    --md-sys-color-on-secondary-container: 224, 224, 224;
-
-    --md-sys-color-tertiary: 233, 192, 127;
-    --md-sys-color-on-tertiary: 58, 37, 10;
-    --md-sys-color-tertiary-container: 84, 54, 21;
-    --md-sys-color-on-tertiary-container: 246, 217, 169;
-
-    --md-sys-color-error: 255, 180, 175;
-    --md-sys-color-on-error: 74, 0, 0;
-    --md-sys-color-error-container: 120, 30, 29;
-    --md-sys-color-on-error-container: 255, 180, 175;
-
-    --md-sys-color-surface: 28, 28, 28;
-    --md-sys-color-on-surface: 226, 226, 226;
-    --md-sys-color-surface-variant: 64, 64, 64;
-    --md-sys-color-on-surface-variant: 198, 198, 198;
-    --md-sys-color-surface-tint: 155, 212, 255;
-
-    --md-sys-color-background: 28, 28, 28;
-    --md-sys-color-on-background: 226, 226, 226;
-
-    --md-sys-color-outline: 96, 96, 96;
-    --md-sys-color-outline-variant: 64, 64, 64;
-
-    --md-sys-color-inverse-surface: 226, 226, 226;
-    --md-sys-color-inverse-on-surface: 47, 47, 47;
-    --md-sys-color-inverse-primary: 0, 102, 204;
-  }
-}
-
-html.dark .md-card,
-html:not(.light) .md-card {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-html.dark .md-card:hover,
-html:not(.light) .md-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-html.dark .md-button-filled,
-html:not(.light) .md-button-filled {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.gap-4 {
+  gap: 1rem;
 }
 
 /* Responsive utilities */
-.container-md {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
+@media (min-width: 768px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-@media (min-width: 640px) {
-  .container-md {
-    padding: 0 24px;
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
-  .container-md {
-    padding: 0 32px;
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-}
 
-/* Animation utilities */
-.animate-scale-in {
-  animation: scaleIn var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
-}
-
-.animate-fade-in {
-  animation: fadeIn var(--md-motion-duration-medium) var(--md-motion-easing-standard);
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* ===========================================
-   MDX Code Block Styling (Shiki)
-   =========================================== */
-
-/* Base code block container */
-pre.astro-code,
-pre[class*="language-"] {
-  background-color: var(--color-md-surface-variant) !important;
-  border-radius: var(--md-shape-corner-large);
-  padding: 1.25rem 1rem;
-  margin: 1.5rem 1.0rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  font-family: var(--md-font-family);
-  font-size: 14px;
-  line-height: 1.6;
-  border: 1px solid var(--color-md-outline-variant);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  transition: box-shadow var(--md-motion-duration-short) var(--md-motion-easing-standard);
-}
-
-pre.astro-code:hover,
-pre[class*="language-"]:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-}
-
-/* Inline code styling */
-code.astro-code,
-:not(pre) > code,
-code[class*="language-"] {
-  background-color: var(--color-md-surface-variant);
-  color: var(--color-md-on-surface-variant);
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--md-shape-corner-small);
-  font-family: var(--md-font-family);
-  font-size: 0.9em;
-  font-weight: 500;
-}
-
-/* Code content styling */
-pre.astro-code code,
-pre[class*="language-"] code {
-  color: inherit;
-  background: none;
-  padding: 0;
-  margin: 0;
-  border-radius: 0;
-  font-size: inherit;
-}
-
-/* Custom scrollbar for code blocks */
-pre.astro-code::-webkit-scrollbar,
-pre[class*="language-"]::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-
-pre.astro-code::-webkit-scrollbar-track,
-pre[class*="language-"]::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 4px;
-}
-
-pre.astro-code::-webkit-scrollbar-thumb,
-pre[class*="language-"]::-webkit-scrollbar-thumb {
-  background-color: var(--color-md-outline);
-  border-radius: 4px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard);
-}
-
-pre.astro-code::-webkit-scrollbar-thumb:hover,
-pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-md-on-surface-variant);
-}
-
-pre.astro-code::-webkit-scrollbar-corner,
-pre[class*="language-"]::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* Firefox scrollbar */
-pre.astro-code,
-pre[class*="language-"] {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-md-outline) transparent;
-}
-
-/* Code block in dark mode */
-html.dark pre.astro-code,
-html.dark pre[class*="language-"],
-html:not(.light) pre.astro-code,
-html:not(.light) pre[class*="language-"] {
-  background-color: rgba(40, 40, 40, 0.95) !important;
-  border-color: var(--color-md-outline-variant);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-}
-
-html.dark pre.astro-code:hover,
-html.dark pre[class*="language-"]:hover,
-html:not(.light) pre.astro-code:hover,
-html:not(.light) pre[class*="language-"]:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
-}
-
-html.dark pre.astro-code::-webkit-scrollbar-thumb,
-html.dark pre[class*="language-"]::-webkit-scrollbar-thumb,
-html:not(.light) pre.astro-code::-webkit-scrollbar-thumb,
-html:not(.light) pre[class*="language-"]::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-html.dark pre.astro-code::-webkit-scrollbar-thumb:hover,
-html.dark pre[class*="language-"]::-webkit-scrollbar-thumb:hover,
-html:not(.light) pre.astro-code::-webkit-scrollbar-thumb:hover,
-html:not(.light) pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.35);
-}
-
-html.dark pre.astro-code,
-html.dark pre[class*="language-"],
-html:not(.light) pre.astro-code,
-html:not(.light) pre[class*="language-"] {
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-}
-
-/* Inline code in dark mode */
-html.dark code.astro-code,
-html.dark :not(pre) > code,
-html.dark code[class*="language-"],
-html:not(.light) code.astro-code,
-html:not(.light) :not(pre) > code,
-html:not(.light) code[class*="language-"] {
-  background-color: rgba(80, 80, 80, 0.9);
-  color: var(--color-md-on-surface-variant);
-}
-
-/* Spacing around code blocks in paragraphs */
-p + pre.astro-code,
-p + pre[class*="language-"],
-p + code.astro-code {
-  margin-top: 1rem;
-}
-
-pre.astro-code + p,
-pre[class*="language-"] + p,
-code.astro-code + * {
-  margin-top: 1rem;
-}
-
-/* Code block in lists */
-li pre.astro-code,
-li pre[class*="language-"] {
-  margin: 1rem 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  pre.astro-code,
-  pre[class*="language-"] {
-    padding: 1rem 0.75rem;
-    margin: 1rem -1rem;
-    border-radius: var(--md-shape-corner-medium);
-    border-left: none;
-    border-right: none;
-    width: calc(100% + 2rem);
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
