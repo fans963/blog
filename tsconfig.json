@@ -10,7 +10,10 @@
   ],
   "compilerOptions": {
     "strictNullChecks": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "jsx": "preserve",
+    "jsxImportSource": "astro"
   }
 }
