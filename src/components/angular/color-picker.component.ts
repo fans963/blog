@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import {
   themeFromSourceColor,
@@ -28,7 +27,7 @@ const PRESET_COLORS: PresetColor[] = [
 @Component({
   selector: 'app-color-picker',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatMenuModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule],
   template: `
     <button
       mat-icon-button
@@ -36,7 +35,7 @@ const PRESET_COLORS: PresetColor[] = [
       aria-label="选择主题颜色"
       class="color-picker-btn"
     >
-      <mat-icon>palette</mat-icon>
+      <span class="material-symbols-outlined">palette</span>
     </button>
 
     <mat-menu #colorMenu="matMenu" class="color-picker-menu">
@@ -56,9 +55,9 @@ const PRESET_COLORS: PresetColor[] = [
             (click)="selectColor(preset.color)"
             mat-button
           >
-            <mat-icon *ngIf="currentColor() === preset.color" class="check-icon">
+            <span *ngIf="currentColor() === preset.color" class="material-symbols-outlined check-icon">
               check
-            </mat-icon>
+            </span>
           </button>
         </div>
 

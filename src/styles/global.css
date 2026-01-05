@@ -66,43 +66,70 @@
 }
 
 /* Remove focus outlines for mouse users, keep for keyboard users */
-* {
-  outline: none;
-}
-
-*:focus-visible {
-  outline: 2px solid var(--color-md-primary);
-  outline-offset: 2px;
-}
-
-/* Remove Angular Material focus indicators */
-.mat-mdc-focus-indicator::before,
-.mat-focus-indicator::before {
-  display: none !important;
-}
-
-/* Remove ripple focus indicators */
-.mat-mdc-button-persistent-ripple {
-  opacity: 0 !important;
-}
-
-/* Remove focus borders from Material components */
-.mat-mdc-button:focus,
-.mat-mdc-icon-button:focus,
-.mat-mdc-fab:focus,
-.mat-mdc-mini-fab:focus,
-.mat-mdc-menu-item:focus,
-.mat-mdc-chip:focus {
+*,
+*:focus {
   outline: none !important;
 }
 
-/* Only show outline for keyboard focus */
+*:focus-visible {
+  outline: 2px solid var(--color-md-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* Remove ALL Angular Material focus indicators and ripples */
+.mat-mdc-focus-indicator,
+.mat-mdc-focus-indicator::before,
+.mat-mdc-focus-indicator::after,
+.mat-focus-indicator,
+.mat-focus-indicator::before,
+.mat-focus-indicator::after,
+.mat-mdc-button-persistent-ripple,
+.mat-mdc-button-ripple,
+.mat-ripple {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Remove focus state from ALL Material components */
+.mat-mdc-button,
+.mat-mdc-button:focus,
+.mat-mdc-button:focus-within,
+.mat-mdc-icon-button,
+.mat-mdc-icon-button:focus,
+.mat-mdc-icon-button:focus-within,
+.mat-mdc-fab,
+.mat-mdc-fab:focus,
+.mat-mdc-fab:focus-within,
+.mat-mdc-mini-fab,
+.mat-mdc-mini-fab:focus,
+.mat-mdc-mini-fab:focus-within,
+.mat-mdc-menu-item,
+.mat-mdc-menu-item:focus,
+.mat-mdc-menu-item:focus-within,
+.mat-mdc-chip,
+.mat-mdc-chip:focus,
+.mat-mdc-chip:focus-within,
+button,
+button:focus,
+button:focus-within,
+a,
+a:focus,
+a:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Only show outline for keyboard focus on interactive elements */
+button:focus-visible,
+a:focus-visible,
 .mat-mdc-button:focus-visible,
 .mat-mdc-icon-button:focus-visible,
 .mat-mdc-fab:focus-visible,
 .mat-mdc-mini-fab:focus-visible {
   outline: 2px solid var(--color-md-primary) !important;
   outline-offset: 2px !important;
+  box-shadow: none !important;
 }
 
 html {

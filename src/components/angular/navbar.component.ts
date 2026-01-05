@@ -2,7 +2,6 @@ import { Component, OnInit, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { ThemeToggleComponent } from './theme-toggle.component';
 import { ColorPickerComponent } from './color-picker.component';
 
@@ -13,7 +12,6 @@ import { ColorPickerComponent } from './color-picker.component';
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
-    MatIconModule,
     ThemeToggleComponent,
     ColorPickerComponent
   ],
@@ -40,7 +38,7 @@ import { ColorPickerComponent } from './color-picker.component';
             [class.nav-link-active]="active() === item.key"
             mat-button
           >
-            <mat-icon class="nav-icon">{{item.icon}}</mat-icon>
+            <span class="material-symbols-outlined nav-icon">{{item.icon}}</span>
             <span class="nav-label">{{item.label}}</span>
           </a>
         </div>
@@ -52,7 +50,7 @@ import { ColorPickerComponent } from './color-picker.component';
             mat-icon-button
             aria-label="搜索文章"
           >
-            <mat-icon>search</mat-icon>
+            <span class="material-symbols-outlined">search</span>
           </a>
 
           @if (mounted()) {

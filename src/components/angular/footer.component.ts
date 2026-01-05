@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule],
   template: `
     <footer class="footer">
       <div class="footer-content">
@@ -37,7 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
               mat-icon-button
               aria-label="GitHub"
             >
-              <mat-icon>code</mat-icon>
+              <span class="material-symbols-outlined">code</span>
             </a>
           </div>
         </div>
@@ -48,7 +47,7 @@ import { MatButtonModule } from '@angular/material/button';
           © {{ currentYear }} fans963. All rights reserved.
         </p>
         <p class="tech-stack">
-          Built with <mat-icon class="heart">favorite</mat-icon> using Astro + Angular + Material Design
+          Built with <span class="material-symbols-filled heart">favorite</span> using Astro + Angular + Material Design
         </p>
       </div>
     </footer>

@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-theme-toggle',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatButtonModule],
   template: `
     <button
       mat-icon-button
@@ -14,9 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
       [attr.aria-label]="'切换主题'"
       class="theme-toggle-btn"
     >
-      <mat-icon class="theme-icon">
+      <span class="material-symbols-outlined theme-icon">
         {{ isDark() ? 'light_mode' : 'dark_mode' }}
-      </mat-icon>
+      </span>
     </button>
   `,
   styles: [`
