@@ -51,6 +51,13 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const initialIsDark = savedTheme ? savedTheme === 'dark' : prefersDark;
       this.isDark.set(initialIsDark);
+      
+      // Apply theme class immediately
+      if (initialIsDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
 
       // Notify Giscus about theme change (delayed to ensure iframe is loaded)
       this.notifyGiscus();

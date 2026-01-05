@@ -207,6 +207,10 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
       // Load saved color
       const savedColor = localStorage.getItem('themeColor') || '#0066CC';
       this.currentColor.set(savedColor);
+      
+      // Apply theme immediately on init
+      const isDark = document.documentElement.classList.contains('dark');
+      this.applyThemeColor(savedColor, isDark);
 
       // Listen to theme changes
       this.themeChangeListener = () => {
