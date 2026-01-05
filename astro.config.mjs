@@ -13,7 +13,19 @@ import cloudflare from '@astrojs/cloudflare';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://fans963blog.asia',
-  integrations: [mdx(), sitemap(), angular()],
+  integrations: [
+    mdx(), 
+    sitemap(), 
+    angular({
+      vite: {
+        inlineStylesExtension: 'scss|sass',
+        transformFilter: (_code, id) => {
+          // Only transform Angular TypeScript files in components directory
+          return id.includes('src/components/angular');
+        },
+      },
+    })
+  ],
   markdown: {
     rehypePlugins: [
       rehypeSlug,
@@ -27,6 +39,12 @@ export default defineConfig({
         imageService: 'compile', // 强制在构建时预处理图片
       }
     }
+  },
+  vite: {
+    ssr: {
+      // Transform Angular packages during SSR
+      noExternal: ['@angular/**', '@analogjs/**'],
+    },
   },
 
   adapter: cloudflare({ imageService: 'compile' }),

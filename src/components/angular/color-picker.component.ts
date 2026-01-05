@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -52,11 +52,11 @@ const PRESET_COLORS: PresetColor[] = [
             class="preset-color-btn"
             [style.background-color]="preset.color"
             [attr.aria-label]="preset.name"
-            [class.active]="currentColor === preset.color"
+            [class.active]="currentColor() === preset.color"
             (click)="selectColor(preset.color)"
             mat-button
           >
-            <mat-icon *ngIf="currentColor === preset.color" class="check-icon">
+            <mat-icon *ngIf="currentColor() === preset.color" class="check-icon">
               check
             </mat-icon>
           </button>
@@ -68,13 +68,13 @@ const PRESET_COLORS: PresetColor[] = [
           <div class="custom-color-input-wrapper">
             <input
               type="color"
-              [value]="currentColor"
+              [value]="currentColor()"
               (input)="onCustomColorInput($event)"
               class="custom-color-input"
             />
             <input
               type="text"
-              [value]="currentColor"
+              [value]="currentColor()"
               (input)="onCustomColorTextInput($event)"
               class="custom-color-text"
               placeholder="#0066CC"
@@ -186,20 +186,33 @@ const PRESET_COLORS: PresetColor[] = [
 })
 export class ColorPickerComponent implements OnInit, OnDestroy {
   presetColors = PRESET_COLORS;
-  currentColor = '#0066CC';
+  
+  // Using signals for reactive state
+  currentColor = signal('#0066CC');
+  
   private themeChangeListener?: () => void;
+
+  constructor() {
+    // Use effect to apply theme when color changes
+    effect(() => {
+      const color = this.currentColor();
+      if (typeof window !== 'undefined') {
+        const isDark = document.documentElement.classList.contains('dark');
+        this.applyThemeColor(color, isDark);
+      }
+    });
+  }
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
       // Load saved color
       const savedColor = localStorage.getItem('themeColor') || '#0066CC';
-      this.currentColor = savedColor;
-      this.applyThemeColor(savedColor);
+      this.currentColor.set(savedColor);
 
       // Listen to theme changes
       this.themeChangeListener = () => {
         const isDark = document.documentElement.classList.contains('dark');
-        this.applyThemeColor(this.currentColor, isDark);
+        this.applyThemeColor(this.currentColor(), isDark);
       };
       window.addEventListener('md3-theme-changed', this.themeChangeListener);
     }
@@ -212,8 +225,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
   }
 
   selectColor(color: string) {
-    this.currentColor = color;
-    this.applyThemeColor(color);
+    this.currentColor.set(color);
     if (typeof window !== 'undefined') {
       localStorage.setItem('themeColor', color);
     }

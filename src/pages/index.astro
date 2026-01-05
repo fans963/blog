@@ -2,8 +2,8 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import NavbarNg from '../components/Navbar-ng.astro';
-import FooterNg from '../components/Footer-ng.astro';
+import { NavbarComponent } from '../components/angular/navbar.component';
+import { FooterComponent } from '../components/angular/footer.component';
 
 // Get all blog posts
 const allPosts: CollectionEntry<'blog'>[] = await getCollection('blog');
@@ -21,19 +21,10 @@ const categoriesData = [...new Set(allPosts.map((post: CollectionEntry<'blog'>) 
   const count = allPosts.filter((p: CollectionEntry<'blog'>) => p.data.category === category).length;
   return { name: category, count };
 });
-
-// Format date
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-}
 ---
 
 <BaseLayout title="欢迎 - My Blog">
-  <NavbarNg active="welcome" />
+  <NavbarComponent active="welcome" client:load />
 
   <main class="welcome-page">
     <!-- Hero Section -->
@@ -120,7 +111,7 @@ function formatDate(date: Date): string {
     </section>
   </main>
 
-  <FooterNg />
+  <FooterComponent client:load />
 </BaseLayout>
 
 <style>

@@ -1,5 +1,5 @@
 /* Import Angular Material theme */
-@import './material-theme.css';
+@import './material-theme.scss';
 
 /* Material Design 3 CSS Variables */
 :root {

@@ -1,12 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
-import Button from "../components/Button.astro";
+import { NavbarComponent } from "../components/angular/navbar.component";
+import { FooterComponent } from "../components/angular/footer.component";
 ---
 
 <BaseLayout title="关于 - My Blog">
-  <Navbar active="about" />
+  <NavbarComponent active="about" client:load />
 
   <main class="flex-1">
     <!-- Hero Section -->
@@ -95,16 +94,16 @@ import Button from "../components/Button.astro";
                 如果你对我的文章感兴趣，或者有任何问题和建议，欢迎通过以下方式联系我：
               </p>
               <div class="flex flex-wrap gap-4">
-                <Button variant="tonal" icon="mail" href="enbofan663@gmail.com">
-                  邮件
-                </Button>
-                <Button
-                  variant="tonal"
-                  icon="code"
-                  href="https://github.com/fans963"
-                >
-                  GitHub
-                </Button>
+<!--                 <Button variant="tonal" icon="mail" href="enbofan663@gmail.com"> -->
+<!--                   邮件 -->
+<!--                 </Button> -->
+<!--                 <Button -->
+<!--                   variant="tonal" -->
+<!--                   icon="code" -->
+<!--                   href="https://github.com/fans963" -->
+<!--                 > -->
+<!--                   GitHub -->
+<!--                 </Button> -->
               </div>
             </section>
           </div>
@@ -113,7 +112,7 @@ import Button from "../components/Button.astro";
     </section>
   </main>
 
-  <Footer />
+  <FooterComponent client:load />
 </BaseLayout>
 
 <style>

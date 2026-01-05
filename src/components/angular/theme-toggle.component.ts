@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
       class="theme-toggle-btn"
     >
       <mat-icon class="theme-icon">
-        {{ isDark ? 'light_mode' : 'dark_mode' }}
+        {{ isDark() ? 'light_mode' : 'dark_mode' }}
       </mat-icon>
     </button>
   `,
@@ -34,14 +34,24 @@ import { MatIconModule } from '@angular/material/icon';
   `]
 })
 export class ThemeToggleComponent implements OnInit, OnDestroy {
-  isDark = false;
+  // Using signals for reactive state
+  isDark = signal(false);
+
+  constructor() {
+    // Use effect to sync theme changes
+    effect(() => {
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.toggle('dark', this.isDark());
+      }
+    });
+  }
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
-      document.documentElement.classList.toggle('dark', this.isDark);
+      const initialIsDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+      this.isDark.set(initialIsDark);
 
       // Notify Giscus about theme change (delayed to ensure iframe is loaded)
       this.notifyGiscus();
@@ -57,9 +67,8 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   toggleTheme() {
     if (typeof window === 'undefined') return;
     
-    this.isDark = !this.isDark;
-    document.documentElement.classList.toggle('dark', this.isDark);
-    localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
+    this.isDark.update(dark => !dark);
+    localStorage.setItem('theme', this.isDark() ? 'dark' : 'light');
     
     // Notify Giscus about theme change
     this.notifyGiscus();
@@ -78,7 +87,7 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   }
 
   private notifyGiscus() {
-    const theme = this.isDark ? 'dark' : 'light';
+    const theme = this.isDark() ? 'dark' : 'light';
     this.sendGiscusMessage({
       setConfig: { theme }
     });

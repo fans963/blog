@@ -2,14 +2,15 @@
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Navbar from '../../components/Navbar.astro';
-import Footer from '../../components/Footer.astro';
-import Button from '../../components/Button.astro';
-import ShareButton from '../../components/ShareButton.astro';
-import ReadingProgress from '../../components/ReadingProgress.astro';
-import ImageViewer from '../../components/ImageViewer.astro';
-import TableOfContents from '../../components/TableOfContents.astro';
-import ViewCount from '../../components/ViewCount.astro';
+import { NavbarComponent } from '../../components/angular/navbar.component';
+import { FooterComponent } from '../../components/angular/footer.component';
+// TODO: Migrate remaining components
+// import Button from '../../components/Button.astro';
+// import ShareButton from '../../components/ShareButton.astro';
+// import ReadingProgress from '../../components/ReadingProgress.astro';
+// import ImageViewer from '../../components/ImageViewer.astro';
+// import TableOfContents from '../../components/TableOfContents.astro';
+// import ViewCount from '../../components/ViewCount.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -81,9 +82,9 @@ const articleJsonLd = {
 
 <BaseLayout title={`${post.data.title} - My Blog`} image={post.data.image}>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(articleJsonLd)} />
-  <ReadingProgress />
-  <TableOfContents headings={tocHeadings} />
-  <Navbar />
+<!--   <ReadingProgress /> -->
+<!--   <TableOfContents headings={tocHeadings} /> -->
+  <NavbarComponent client:load />
 
   <main class="flex-1">
     <div class="relative h-[40vh] min-h-[300px] max-h-[500px] overflow-hidden">
@@ -116,7 +117,7 @@ const articleJsonLd = {
             </span>
             <span class="label-medium text-[var(--color-md-on-surface-variant)] flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">visibility</span>
-              <ViewCount slug={post.slug} showLabel={false} icon={false} />
+<!--               <ViewCount slug={post.slug} showLabel={false} icon={false} /> -->
             </span>
           </div>
 
@@ -132,11 +133,11 @@ const articleJsonLd = {
         </header>
 
         <div class="max-w-3xl mx-auto">
-          <ImageViewer>
-            <div class="prose prose-lg max-w-none prose-headings:text-[var(--color-md-on-background)] prose-p:text-[var(--color-md-on-surface-variant)] prose-a:text-[var(--color-md-primary)] prose-strong:text-[var(--color-md-on-surface)] prose-code:bg-[var(--color-md-surface-variant)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[var(--color-md-surface)] prose-pre:text-[var(--color-md-on-surface)] prose-pre:rounded-xl prose-pre:border prose-pre:border-[var(--color-md-outline-variant)]">
-              <Content />
-            </div>
-          </ImageViewer>
+          <ImageViewer> -->
+            <div class="prose prose-lg max-w-none prose-headings:text-[var(--color-md-on-background)] prose-p:text-[var(--color-md-on-surface-variant)] prose-a:text-[var(--color-md-primary)] prose-strong:text-[var(--color-md-on-surface)] prose-code:bg-[var(--color-md-surface-variant)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-[var(--color-md-surface)] prose-pre:text-[var(--color-md-on-surface)] prose-pre:rounded-xl prose-pre:border prose-pre:border-[var(--color-md-outline-variant)]"> -->
+              <Content /> -->
+            </div> -->
+          </ImageViewer> -->
 
           <div class="mt-12 pt-8 border-t border-[var(--color-md-outline-variant)]">
             <div class="flex items-center justify-between">
@@ -208,7 +209,7 @@ const articleJsonLd = {
     </article>
   </main>
 
-  <Footer />
+  <FooterComponent client:load />
 </BaseLayout>
 
 <script>

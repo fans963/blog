@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,7 +37,7 @@ import { ColorPickerComponent } from './color-picker.component';
             *ngFor="let item of navItems"
             [href]="item.href"
             class="nav-link"
-            [class.nav-link-active]="active === item.key"
+            [class.nav-link-active]="active() === item.key"
             mat-button
           >
             <mat-icon class="nav-icon">{{item.icon}}</mat-icon>
@@ -55,8 +55,10 @@ import { ColorPickerComponent } from './color-picker.component';
             <mat-icon>search</mat-icon>
           </a>
 
-          <app-color-picker *ngIf="mounted"></app-color-picker>
-          <app-theme-toggle *ngIf="mounted"></app-theme-toggle>
+          @if (mounted()) {
+            <app-color-picker />
+            <app-theme-toggle />
+          }
         </div>
       </div>
     </mat-toolbar>
@@ -154,9 +156,11 @@ import { ColorPickerComponent } from './color-picker.component';
   `]
 })
 export class NavbarComponent implements OnInit {
-  @Input() active: string = 'home';
+  // Using input() signal for reactive input
+  active = input<string>('home');
   
-  mounted = false;
+  // Using signal for mounted state
+  mounted = signal(false);
 
   navItems = [
     { href: '/blog', label: '首页', icon: 'home', key: 'home' },
@@ -164,6 +168,6 @@ export class NavbarComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.mounted = true;
+    this.mounted.set(true);
   }
 }

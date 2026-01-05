@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,17 +8,17 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule],
   template: `
-    <button
-      *ngIf="isVisible"
-      mat-fab
-      color="primary"
-      class="back-to-top-btn"
-      (click)="scrollToTop()"
-      [@fadeInOut]
-      aria-label="回到顶部"
-    >
-      <mat-icon>arrow_upward</mat-icon>
-    </button>
+    @if (isVisible()) {
+      <button
+        mat-fab
+        color="primary"
+        class="back-to-top-btn"
+        (click)="scrollToTop()"
+        aria-label="回到顶部"
+      >
+        <mat-icon>arrow_upward</mat-icon>
+      </button>
+    }
   `,
   styles: [`
     .back-to-top-btn {
@@ -43,22 +43,22 @@ import { MatIconModule } from '@angular/material/icon';
         height: 48px;
       }
     }
-  `],
-  animations: []
+  `]
 })
 export class BackToTopComponent implements OnInit, OnDestroy {
-  isVisible = false;
+  // Using signal for reactive visibility state
+  isVisible = signal(false);
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     if (typeof window !== 'undefined') {
-      this.isVisible = window.pageYOffset > 300;
+      this.isVisible.set(window.pageYOffset > 300);
     }
   }
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
-      this.isVisible = window.pageYOffset > 300;
+      this.isVisible.set(window.pageYOffset > 300);
     }
   }
 
