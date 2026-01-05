@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, signal } from '@angular/core';
+import { Component, OnDestroy, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -44,18 +44,12 @@ import { MatButtonModule } from '@angular/material/button';
     }
   `]
 })
-export class BackToTopComponent implements OnInit, OnDestroy {
+export class BackToTopComponent implements OnDestroy {
   // Using signal for reactive visibility state
   isVisible = signal(false);
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    if (typeof window !== 'undefined') {
-      this.isVisible.set(window.pageYOffset > 300);
-    }
-  }
-
-  ngOnInit() {
     if (typeof window !== 'undefined') {
       this.isVisible.set(window.pageYOffset > 300);
     }
