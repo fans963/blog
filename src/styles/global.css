@@ -65,6 +65,46 @@
   padding: 0;
 }
 
+/* Remove focus outlines for mouse users, keep for keyboard users */
+* {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-md-primary);
+  outline-offset: 2px;
+}
+
+/* Remove Angular Material focus indicators */
+.mat-mdc-focus-indicator::before,
+.mat-focus-indicator::before {
+  display: none !important;
+}
+
+/* Remove ripple focus indicators */
+.mat-mdc-button-persistent-ripple {
+  opacity: 0 !important;
+}
+
+/* Remove focus borders from Material components */
+.mat-mdc-button:focus,
+.mat-mdc-icon-button:focus,
+.mat-mdc-fab:focus,
+.mat-mdc-mini-fab:focus,
+.mat-mdc-menu-item:focus,
+.mat-mdc-chip:focus {
+  outline: none !important;
+}
+
+/* Only show outline for keyboard focus */
+.mat-mdc-button:focus-visible,
+.mat-mdc-icon-button:focus-visible,
+.mat-mdc-fab:focus-visible,
+.mat-mdc-mini-fab:focus-visible {
+  outline: 2px solid var(--color-md-primary) !important;
+  outline-offset: 2px !important;
+}
+
 html {
   font-family: var(--md-font-family);
   scroll-behavior: smooth;
