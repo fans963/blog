@@ -33,25 +33,16 @@ export default defineConfig(({ mode }) => ({
       },
       ssrBuildDir: './.amplify-hosting/compute/default',
       nitro: {
-        preset: 'cloudflare-pages',
+        preset: 'cloudflare-module',
         serveStatic: true,
         externals: { inline: ['zone.js/node', '@angular/**'] },
         output: {
-          dir: 'dist/analog',
+          dir: 'dist/_worker.js',
           publicDir: 'dist/public',
         },
         rollupConfig: {
           output: {
-            entryFileNames: 'server.mjs',
-          },
-        },
-        cloudflare: {
-          pages: {
-            // Avoid reserved 'ASSETS' binding name in Cloudflare Pages
-            routes: {
-              include: ['/*'],
-              exclude: ['/assets/*'],
-            },
+            entryFileNames: 'index.js',
           },
         },
       },
