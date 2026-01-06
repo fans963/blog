@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => ({
           host: 'https://blog.example.com',
         },
       },
-      ssr: true,
+      ssrBuildDir: './.amplify-hosting/compute/default',
       nitro: {
         preset: 'cloudflare-pages',
         serveStatic: true,
@@ -38,6 +38,11 @@ export default defineConfig(({ mode }) => ({
         output: {
           dir: 'dist',
           publicDir: 'dist/public',
+        },
+        rollupConfig: {
+          output: {
+            entryFileNames: 'server.mjs',
+          },
         },
       },
     }),
