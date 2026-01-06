@@ -38,31 +38,31 @@ interface BlogPost {
         @if (post()) {
           <article class="article">
             <header class="article-header">
-              <h1 class="article-title">{{ post()!.title }}</h1>
-              <p class="article-description">{{ post()!.description }}</p>
+              <h1 class="article-title">{{ post()!.attributes.title }}</h1>
+              <p class="article-description">{{ post()!.attributes.description }}</p>
               <div class="article-meta">
                 <span class="meta-item">
                   <span class="material-symbols-outlined">person</span>
-                  {{ post()!.author }}
+                  {{ post()!.attributes.author || 'Fans963' }}
                 </span>
                 <span class="meta-item">
                   <span class="material-symbols-outlined">calendar_today</span>
-                  {{ post()!.date }}
+                  {{ post()!.attributes.date }}
                 </span>
                 <span class="meta-item">
                   <span class="material-symbols-outlined">schedule</span>
-                  {{ post()!.readingTime }}
+                  {{ post()!.attributes.readingTime || '5 分钟' }}
                 </span>
               </div>
               <div class="article-tags">
-                @for (tag of post()!.tags; track tag) {
+                @for (tag of post()!.attributes.tags; track tag) {
                   <span class="tag">{{ tag }}</span>
                 }
               </div>
             </header>
             <mat-divider></mat-divider>
             <div class="article-content">
-              <analog-markdown [content]="content()"></analog-markdown>
+              <analog-markdown [content]="post()!.content"></analog-markdown>
             </div>
             <mat-divider></mat-divider>
             <footer class="article-footer">
@@ -104,19 +104,5 @@ export default class BlogDetailPageComponent {
     subdirectory: 'blog'
   });
 
-  get post() {
-    const contentData = this.content();
-    if (!contentData) return null;
-    
-    return {
-      slug: contentData.slug || '',
-      title: contentData.attributes?.title || '',
-      description: contentData.attributes?.description || '',
-      date: contentData.attributes?.date || '',
-      author: contentData.attributes?.author || 'Fans963',
-      category: contentData.attributes?.category || '',
-      tags: contentData.attributes?.tags || [],
-      readingTime: contentData.attributes?.readingTime || '5 分钟'
-    };
-  }
+  readonly post = this.content;
 }
