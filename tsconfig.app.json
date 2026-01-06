@@ -1,34 +1,20 @@
 {
   "extends": "./tsconfig.json",
-  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
-    "noEmit": false,
-    "target": "es2020",
-    "module": "es2020",
-    "lib": ["es2020", "dom"],
-    "skipLibCheck": true
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true,
+    "outDir": "./out-tsc/app",
+    "types": ["vite/client"],
     "allowJs": false
   },
-  "files": [],
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "files": [
+    "src/main.ts",
+    "src/main.server.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.spec.ts"
+  ],
+  "exclude": [
+    "src/test-setup.ts"
+  ]
 }
