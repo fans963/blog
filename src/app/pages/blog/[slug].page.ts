@@ -99,10 +99,8 @@ interface BlogPost {
   \`]
 })
 export default class BlogDetailPageComponent {
-  readonly content = injectContent<BlogPost>({
+  readonly post = injectContent<BlogPost>({
     param: 'slug',
     subdirectory: 'blog'
   });
-
-  readonly post = this.content;
 }
