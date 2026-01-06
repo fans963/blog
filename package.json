@@ -9,8 +9,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@analogjs/content": "^1.16.0",
-    "@analogjs/router": "^1.16.0",
+    "@analogjs/content": "^1.22.5",
+    "@analogjs/router": "^1.22.5",
     "@angular/animations": "^20.3.15",
     "@angular/cdk": "^20.2.14",
     "@angular/common": "^20.3.15",
@@ -26,7 +26,7 @@
     "front-matter": "^4.0.2",
     "isomorphic-dompurify": "^2.20.0",
     "marked": "^15.0.6",
-    "marked-gfm-heading-id": "^4.3.0",
+    "marked-gfm-heading-id": "^4.1.1",
     "marked-highlight": "^2.1.4",
     "mermaid": "^11.5.1",
     "prismjs": "^1.29.0",
@@ -35,8 +35,8 @@
     "zone.js": "^0.15.1"
   },
   "devDependencies": {
-    "@analogjs/platform": "^1.16.0",
-    "@analogjs/vite-plugin-angular": "^1.16.0",
+    "@analogjs/platform": "^1.22.5",
+    "@analogjs/vite-plugin-angular": "^1.22.5",
     "@angular-devkit/build-angular": "^20.3.13",
     "@angular/build": "^20.3.13",
     "@angular/compiler-cli": "^20.3.15",
