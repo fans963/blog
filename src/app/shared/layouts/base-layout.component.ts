@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from '../../../components/angular/navbar.component';
-import { FooterComponent } from '../../../components/angular/footer.component';
-import { BackToTopComponent } from '../../../components/angular/back-to-top.component';
+import { NavbarComponent } from '../../components/navbar.component';
+import { FooterComponent } from '../../components/footer.component';
+import { BackToTopComponent } from '../../components/back-to-top.component';
 
 @Component({
   selector: 'app-base-layout',

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { BaseLayoutComponent } from '../shared/layouts/base-layout.component';
-import { HeroSectionComponent } from '../../components/angular/hero-section.component';
-import { CategoriesSectionComponent } from '../../components/angular/categories-section.component';
-import { StatsSectionComponent } from '../../components/angular/stats-section.component';
+import { HeroSectionComponent } from '../components/hero-section.component';
+import { CategoriesSectionComponent } from '../components/categories-section.component';
+import { StatsSectionComponent } from '../components/stats-section.component';
 
 export const routeMeta = {
   title: 'Home | My M3 Blog',
