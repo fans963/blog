@@ -1,11 +1,12 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { BaseLayoutComponent } from '../../shared/layouts/base-layout.component';
+import { injectContent, MarkdownComponent } from '@analogjs/content';
 
 interface BlogPost {
   slug: string;
@@ -16,7 +17,6 @@ interface BlogPost {
   category: string;
   tags: string[];
   readingTime: string;
-  content: string;
 }
 
 @Component({
@@ -29,7 +29,8 @@ interface BlogPost {
     MatButtonModule,
     MatChipsModule,
     MatDividerModule,
-    BaseLayoutComponent
+    BaseLayoutComponent,
+    MarkdownComponent
   ],
   template: \`
     <app-base-layout>
@@ -60,14 +61,14 @@ interface BlogPost {
               </div>
             </header>
             <mat-divider></mat-divider>
-            <div class="article-content" [innerHTML]="post()!.content"></div>
+            <div class="article-content">
+              <analog-markdown [content]="content()"></analog-markdown>
+            </div>
             <mat-divider></mat-divider>
             <footer class="article-footer">
               <p class="footer-text">如果您觉得这篇文章有帮助，欢迎分享给更多人！</p>
             </footer>
           </article>
-        } @else if (loading()) {
-          <div class="loading"><p>加载中...</p></div>
         } @else {
           <div class="not-found">
             <span class="material-symbols-outlined">search_off</span>
@@ -97,23 +98,25 @@ interface BlogPost {
     .loading, .not-found { text-align: center; padding: 4rem 2rem; }
   \`]
 })
-export default class BlogDetailPageComponent implements OnInit {
-  post = signal<BlogPost | null>(null);
-  loading = signal(true);
-  private mockPosts: Record<string, BlogPost> = {
-    'm3-blog-introduction': {
-      slug: 'm3-blog-introduction', title: 'Material Design 3 博客介绍',
-      description: '介绍使用 Material Design 3 和 Angular 构建的现代博客系统',
-      date: '2024-01-15', author: 'Fans963', category: 'Angular',
-      tags: ['Material Design', 'Angular', 'UI/UX'], readingTime: '5 分钟',
-      content: '<h2>欢迎来到我的博客</h2><p>这是一个使用 Angular 20 和 Material Design 3 构建的现代化博客系统。</p>'
-    }
-  };
-  constructor(private route: ActivatedRoute) {}
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      const slug = params['slug'];
-      setTimeout(() => { this.post.set(this.mockPosts[slug] || null); this.loading.set(false); }, 500);
-    });
+export default class BlogDetailPageComponent {
+  readonly content = injectContent<BlogPost>({
+    param: 'slug',
+    subdirectory: 'blog'
+  });
+
+  get post() {
+    const contentData = this.content();
+    if (!contentData) return null;
+    
+    return {
+      slug: contentData.slug || '',
+      title: contentData.attributes?.title || '',
+      description: contentData.attributes?.description || '',
+      date: contentData.attributes?.date || '',
+      author: contentData.attributes?.author || 'Fans963',
+      category: contentData.attributes?.category || '',
+      tags: contentData.attributes?.tags || [],
+      readingTime: contentData.attributes?.readingTime || '5 分钟'
+    };
   }
 }
