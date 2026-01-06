@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => ({
         serveStatic: true,
         externals: { inline: ['zone.js/node', '@angular/**'] },
         output: {
-          dir: 'dist',
+          dir: 'dist/analog',
           publicDir: 'dist/public',
         },
         rollupConfig: {
