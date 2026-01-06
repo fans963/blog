@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => ({
         },
         rollupConfig: {
           output: {
-            entryFileNames: 'index.js',
+            entryFileNames: 'index.mjs',
           },
         },
       },
