@@ -45,6 +45,15 @@ export default defineConfig(({ mode }) => ({
             entryFileNames: 'server.mjs',
           },
         },
+        cloudflare: {
+          pages: {
+            // Avoid reserved 'ASSETS' binding name in Cloudflare Pages
+            routes: {
+              include: ['/*'],
+              exclude: ['/assets/*'],
+            },
+          },
+        },
       },
     }),
   ],
